@@ -1,3 +1,14 @@
+# Info
+
+`LaunchAppContainer.exe` - launching win32 apps in AppContainer sandboxes with various options
+
+`LearningMode.exe` - provides ETW tracing for Permissive Learning Mode
+
+`SetAppContainerACL.exe` - allows settings ACL permissions for specific AppContainer sandboxes
+
+
+All programs have a dark mode or light mode depending on the system theme settings.
+
 # Screenshots
 
 ![win32-appcontainer-launch](https://github.com/user-attachments/assets/f4b531a7-a992-4bb4-8a69-81747f1e7839)
@@ -14,3 +25,5 @@
 [AppContainerSid](https://github.com/forderud/RunInSandbox/tree/master/AppContainerSid) - Thanks to @forderud for giving permission to include AppContainerSid.
 
 [LaunchAppContainer](https://github.com/microsoft/SandboxSecurityTools/tree/main/LaunchAppContainer) - Thanks to @microsoft for providing this tool.
+
+[LowBox Token Permissive Learning Mode](https://www.tiraniddo.dev/2021/09/lowbox-token-permissive-learning-mode.html) - Thanks to @tyranid for the inspiration for the Learning Mode tool.
