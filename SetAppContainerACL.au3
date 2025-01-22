@@ -830,6 +830,10 @@ WinMove($hGUI,'', (@Desktopwidth - WinGetPos($hGUI)[2]) / 2,(@Desktopheight - Wi
 
 GUISetState(@SW_SHOWMINIMIZED)
 GUISetState(@SW_RESTORE)
+
+WinSetOnTop($hGUI, "", $WINDOWS_ONTOP)
+WinSetOnTop($hGUI, "", $WINDOWS_NOONTOP)
+
 GUICtrlSetState($FolderACLText, $GUI_FOCUS)
 
 
