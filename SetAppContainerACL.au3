@@ -21,6 +21,9 @@
 #EndRegion ; *** Dynamically added Include files ***
 
 #NoTrayIcon
+
+#pragma compile(Out, _build\SetAppContainerACL.exe)
+
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_Icon=app.ico
 #AutoIt3Wrapper_UseX64=y
