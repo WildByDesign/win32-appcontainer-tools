@@ -53,13 +53,13 @@ jobs:
       with:
         name: executable-files
         path: |
-          $PWD
+          $GITHUB_WORKSPACE
     - name: Create release
       uses: softprops/action-gh-release@v2
       if: ${{ inputs.release }}
       with:
         draft: true
         files: |
-          LaunchAppContainer.exe
-          LearningMode.exe
-          SetAppContainerACL.exe
+          $GITHUB_WORKSPACE\LaunchAppContainer.exe
+          $GITHUB_WORKSPACE\LearningMode.exe
+          $GITHUB_WORKSPACE\SetAppContainerACL.exe
