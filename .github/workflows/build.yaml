@@ -53,7 +53,7 @@ jobs:
       with:
         name: executable-files
         path: |
-          /
+          
     - name: Create release
       uses: softprops/action-gh-release@v2
       if: ${{ inputs.release }}
