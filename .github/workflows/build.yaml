@@ -1,0 +1,72 @@
+
+name: Build AutoIt3 binaries
+run-name: Build version ${{ inputs.version }}
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: The version of the library
+        required: true
+        default: 0.1.0
+        type: string
+      release:
+        description: Create a release
+        required: true
+        default: false
+        type: boolean
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Install AutoIt3
+      run: |
+        $Setup = "autoit-v3-setup.exe"
+        $Uri = "https://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/$Setup"
+        Invoke-WebRequest -Uri $Uri -OutFile $Setup
+        & .\$Setup /S
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Compile AutoIt3 files
+      run: |
+        $Aut2exe = "C:\Program Files (x86)\AutoIt3\Aut2exe\Aut2exe.exe"
+        New-Item -Type Directory -Name _build
+        & $Aut2exe /in LaunchAppContainer.au3 /out _build\LaunchAppContainer.exe
+        & $Aut2exe /in LearningMode.au3 /out _build\LearningMode.exe
+        & $Aut2exe /in SetAppContainerACL.au3 /out _build\SetAppContainerACL.exe
+    - name: Write the signing certificate to a file
+      env:
+        CERT_BASE64: ${{ secrets.SIGNING_CERTIFICATE }}
+      run: |
+        $env:CERT_BASE64 | Out-File -FilePath cert.txt -Encoding ASCII
+        certutil.exe -decode cert.txt cert.pfx
+    - name: Sign the binaries
+      env:
+        CERT_PASSWORD: ${{ secrets.SIGNING_CERTIFICATE_PASSWORD }}
+      run: |
+        # Shows the available Software Kit versions
+        Get-ChildItem -Path "C:\Program Files (x86)\Windows Kits\10\bin"
+
+        $KitVersion = "10.0.26100.0"
+        $SignTool = "C:\Program Files (x86)\Windows Kits\10\bin\$KitVersion\x64\signtool.exe"
+        $TimestampUri = "http://timestamp.digicert.com"
+        $Pass = $env:CERT_PASSWORD
+
+        & $SignTool sign /tr $TimestampUri /td SHA256 /fd SHA256 /f cert.pfx /p $Pass `
+          _build\LaunchAppContainer.exe `
+          _build\LearningMode.exe `
+          _build\SetAppContainerACL.exe
+    - name: Archive binaries
+      uses: actions/upload-artifact@v4
+      with:
+        name: executable-files
+        path: |
+          _build
+    - name: Create release
+      uses: softprops/action-gh-release@v2
+      if: ${{ inputs.release }}
+      with:
+        draft: true
+        files: |
+          _build/LaunchAppContainer.exe
+          _build/LearningMode.exe
+          _build/SetAppContainerACL.exe
