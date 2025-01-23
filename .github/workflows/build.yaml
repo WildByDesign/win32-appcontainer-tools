@@ -35,11 +35,19 @@ jobs:
     - name: Compile AutoIt3 files
       run: |
         $Aut2exe = "C:\Program Files (x86)\AutoIt3\Aut2exe\Aut2exe.exe"
-        $Icon = "app.ico"
+        $AutoIt3Wrapper = "C:\Program Files (x86)\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.au3"
+        $ArgsIn = " /NoStatus /prod /in "
+        $ArgsOut = " /out "
+        $LaunchAppContainerIn = "LaunchAppContainer.au3"
+        $LaunchAppContainerOut = "_build\LaunchAppContainer.exe"
+        $LearningModeIn = "LearningMode.au3"
+        $LearningModeOut = "_build\LearningMode.exe"
+        $SetAppContainerACLIn = "SetAppContainerACL.au3"
+        $SetAppContainerACLOut = "_build\SetAppContainerACL.exe"
         New-Item -Type Directory -Name _build
-        & $Aut2exe /in LaunchAppContainer.au3 /out _build\LaunchAppContainer.exe /nopack /icon $Icon /comp 2 /x64
-        & $Aut2exe /in LearningMode.au3 /out _build\LearningMode.exe /nopack /icon $Icon /comp 2 /x64
-        & $Aut2exe /in SetAppContainerACL.au3 /out _build\SetAppContainerACL.exe /nopack /icon $Icon /comp 2 /x64
+        & $Aut2exe + " " + $AutoIt3Wrapper + $ArgsIn + $LaunchAppContainerIn + $ArgsOut + $LaunchAppContainerOut
+        & $Aut2exe + " " + $AutoIt3Wrapper + $ArgsIn + $LearningModeIn + $ArgsOut + $LearningModeOut
+        & $Aut2exe + " " + $AutoIt3Wrapper + $ArgsIn + $SetAppContainerACLIn + $ArgsOut + $SetAppContainerACLOut64
     - name: Archive binaries
       uses: actions/upload-artifact@v4
       with:
