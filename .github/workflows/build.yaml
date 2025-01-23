@@ -24,7 +24,6 @@ jobs:
         $Uri = "https://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/$Setup"
         Invoke-WebRequest -Uri $Uri -OutFile $Setup
         & .\$Setup /S
-        - name: Install AutoIt3
     - name: Install SciTE4AutoIt3
       run: |
         $Setup2 = "SciTE4AutoIt3.exe"
