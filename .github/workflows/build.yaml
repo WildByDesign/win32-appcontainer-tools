@@ -45,9 +45,9 @@ jobs:
         $SetAppContainerACLIn = "SetAppContainerACL.au3"
         $SetAppContainerACLOut = "_build\SetAppContainerACL.exe"
         New-Item -Type Directory -Name _build
-        & $Aut2exe + " " + $AutoIt3Wrapper + $ArgsIn + $LaunchAppContainerIn + $ArgsOut + $LaunchAppContainerOut
-        & $Aut2exe + " " + $AutoIt3Wrapper + $ArgsIn + $LearningModeIn + $ArgsOut + $LearningModeOut
-        & $Aut2exe + " " + $AutoIt3Wrapper + $ArgsIn + $SetAppContainerACLIn + $ArgsOut + $SetAppContainerACLOut64
+        & $Aut2exe + " " + $AutoIt3Wrapper + $ArgsIn + $LaunchAppContainerIn
+        & $Aut2exe + " " + $AutoIt3Wrapper + $ArgsIn + $LearningModeIn
+        & $Aut2exe + " " + $AutoIt3Wrapper + $ArgsIn + $SetAppContainerACLIn
     - name: Archive binaries
       uses: actions/upload-artifact@v4
       with:
@@ -60,6 +60,6 @@ jobs:
       with:
         draft: true
         files: |
-          _build/LaunchAppContainer.exe
-          _build/LearningMode.exe
-          _build/SetAppContainerACL.exe
+          LaunchAppContainer.exe
+          LearningMode.exe
+          SetAppContainerACL.exe
