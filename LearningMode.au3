@@ -29,7 +29,7 @@
 #RequireAdmin
 #NoTrayIcon
 
-#pragma compile(Out, _build\LearningMode)
+#pragma compile(Out, _build\LearningMode.exe)
 
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_Icon=app.ico
