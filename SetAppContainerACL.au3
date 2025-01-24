@@ -1,3 +1,5 @@
+#NoTrayIcon
+
 #Region ; *** Dynamically added Include files ***
 #include <ButtonConstants.au3>                               ; added:12/10/24 21:49:28
 #include <GUIConstantsEx.au3>                                ; added:12/10/24 21:49:28
@@ -20,7 +22,16 @@
 #include <Misc.au3>                                          ; added:01/10/25 07:50:07
 #EndRegion ; *** Dynamically added Include files ***
 
-#NoTrayIcon
+#include <GUIConstants.au3>
+#include <File.au3>
+
+#include "includes\ExtMsgBox.au3"
+#include "includes\GuiCtrls_HiDpi.au3"
+#include "includes\GUIDarkMode_v0.02mod.au3"
+#include "includes\GUIListViewEx.au3"
+
+#include "includes\GUIComboBoxColor.au3"
+#include "includes\GUIComboBoxFont.au3"
 
 #pragma compile(Out, _build\SetAppContainerACL.exe)
 #pragma compile(OriginalFilename, SetAppContainerACL.exe)
@@ -33,22 +44,11 @@
 #pragma compile(LegalCopyright, @ 2025 WildByDesign)
 #pragma compile(Compatibility, win10)
 
-#include <GUIConstants.au3>
-#include <File.au3>
-
-#include "includes\ExtMsgBox.au3"
-#include "includes\GuiCtrls_HiDpi.au3"
-#include "includes\GUIDarkMode_v0.02mod.au3"
-#include "includes\GUIListViewEx.au3"
-
-#include "includes\GUIComboBoxColor.au3"
-#include "includes\GUIComboBoxFont.au3"
-
 ; System aware DPI awareness
-DllCall("User32.dll", "bool", "SetProcessDPIAware")
+;DllCall("User32.dll", "bool", "SetProcessDPIAware")
 
 ; Per-monitor V2 DPI awareness
-;DllCall("User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT" -4)
+DllCall("User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT" -4)
 
 If _Singleton("SetAppContainerACL", 1) = 0 Then
         $sMsg = " An instance of Set AppContainer ACL is already running. " & @CRLF

@@ -1,3 +1,5 @@
+#NoTrayIcon
+
 #Region ; *** Dynamically added Include files ***
 #include <ButtonConstants.au3>                               ; added:12/10/24 21:49:28
 #include <GUIConstantsEx.au3>                                ; added:12/10/24 21:49:28
@@ -20,10 +22,16 @@
 #include <Misc.au3>                                          ; added:01/10/25 07:48:01
 #EndRegion ; *** Dynamically added Include files ***
 
-#NoTrayIcon
+#include <GUIConstants.au3>
+#include <File.au3>
+
+#include "includes\ExtMsgBox.au3"
+#include "includes\GuiCtrls_HiDpi.au3"
+#include "includes\GUIDarkMode_v0.02mod.au3"
+#include "includes\GUIListViewEx.au3"
 
 #pragma compile(Out, _build\LaunchAppContainer.exe)
-#pragma compile(OriginalFilename, LaunchAppContainer)
+#pragma compile(OriginalFilename, LaunchAppContainer.exe)
 #pragma compile(Icon, app.ico)
 #pragma compile(x64, true)
 #pragma compile(FileDescription, Launch AppContainer)
@@ -32,14 +40,6 @@
 #pragma compile(ProductName, LaunchAppContainer)
 #pragma compile(LegalCopyright, @ 2025 WildByDesign)
 #pragma compile(Compatibility, win10)
-
-#include <GUIConstants.au3>
-#include <File.au3>
-
-#include "includes\ExtMsgBox.au3"
-#include "includes\GuiCtrls_HiDpi.au3"
-#include "includes\GUIDarkMode_v0.02mod.au3"
-#include "includes\GUIListViewEx.au3"
 
 ; System aware DPI awareness
 DllCall("User32.dll", "bool", "SetProcessDPIAware")

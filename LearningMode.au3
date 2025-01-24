@@ -1,3 +1,6 @@
+#RequireAdmin
+#NoTrayIcon
+
 #Region ; *** Dynamically added Include files ***
 #include <ButtonConstants.au3>                               ; added:12/10/24 21:49:28
 #include <GUIConstantsEx.au3>                                ; added:12/10/24 21:49:28
@@ -26,8 +29,15 @@
 #include <Misc.au3>                                          ; added:01/10/25 07:52:34
 #EndRegion ; *** Dynamically added Include files ***
 
-#RequireAdmin
-#NoTrayIcon
+#include <GUIConstants.au3>
+#include <File.au3>
+#Include <WinAPIEx.au3>
+#include <WinAPIFiles.au3>
+
+#include "includes\ExtMsgBox.au3"
+#include "includes\GuiCtrls_HiDpi.au3"
+#include "includes\GUIDarkMode_v0.02mod.au3"
+#include "includes\GUIListViewEx.au3"
 
 #pragma compile(Out, _build\LearningMode.exe)
 #pragma compile(OriginalFilename, LearningMode.exe)
@@ -40,22 +50,12 @@
 #pragma compile(LegalCopyright, @ 2025 WildByDesign)
 #pragma compile(Compatibility, win10)
 
-#include <GUIConstants.au3>
-#include <File.au3>
-#Include <WinAPIEx.au3>
-#include <WinAPIFiles.au3>
-
-#include "includes\ExtMsgBox.au3"
-#include "includes\GuiCtrls_HiDpi.au3"
-#include "includes\GUIDarkMode_v0.02mod.au3"
-#include "includes\GUIListViewEx.au3"
-
 
 ; System aware DPI awareness
-DllCall("User32.dll", "bool", "SetProcessDPIAware")
+;DllCall("User32.dll", "bool", "SetProcessDPIAware")
 
 ; Per-monitor V2 DPI awareness
-;DllCall("User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT" -4)
+DllCall("User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT" -4)
 
 
 Global $tracepath = '"' & @LocalAppDataDir & '\Temp\AppContainerTrace.etl' & '"'
