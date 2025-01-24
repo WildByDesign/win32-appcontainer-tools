@@ -30,20 +30,15 @@
 #NoTrayIcon
 
 #pragma compile(Out, _build\LearningMode.exe)
-
-#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
-#AutoIt3Wrapper_Icon=app.ico
-#AutoIt3Wrapper_UseX64=y
-#AutoIt3Wrapper_Res_Description=AppContainer Learning Mode
-#AutoIt3Wrapper_Res_Fileversion=1.0.0.0
-#AutoIt3Wrapper_Res_ProductVersion=1.0.0
-#AutoIt3Wrapper_Res_ProductName=AppContainerLearningMode
-#AutoIt3Wrapper_Res_LegalCopyright=@ 2024 WildByDesign
-#AutoIt3Wrapper_Res_Language=1033
-#AutoIt3Wrapper_Res_HiDpi=P
-#AutoIt3Wrapper_Res_Icon_Add=app.ico
-#Au3Stripper_Parameters=/MergeOnly
-#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
+#pragma compile(OriginalFilename, LearningMode.exe)
+#pragma compile(Icon, app.ico)
+#pragma compile(x64, true)
+#pragma compile(FileDescription, AppContainer Learning Mode)
+#pragma compile(FileVersion, 1.0.0)
+#pragma compile(ProductVersion, 1.0.0)
+#pragma compile(ProductName, AppContainerLearningMode)
+#pragma compile(LegalCopyright, @ 2025 WildByDesign)
+#pragma compile(Compatibility, win10)
 
 #include <GUIConstants.au3>
 #include <File.au3>
@@ -54,6 +49,14 @@
 #include "includes\GuiCtrls_HiDpi.au3"
 #include "includes\GUIDarkMode_v0.02mod.au3"
 #include "includes\GUIListViewEx.au3"
+
+
+; System aware DPI awareness
+DllCall("User32.dll", "bool", "SetProcessDPIAware")
+
+; Per-monitor V2 DPI awareness
+;DllCall("User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT" -4)
+
 
 Global $tracepath = '"' & @LocalAppDataDir & '\Temp\AppContainerTrace.etl' & '"'
 Global $xmlpath = '"' & @LocalAppDataDir & '\Temp\AppContainerTrace.xml' & '"'

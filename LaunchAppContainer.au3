@@ -23,19 +23,15 @@
 #NoTrayIcon
 
 #pragma compile(Out, _build\LaunchAppContainer.exe)
-
-#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
-#AutoIt3Wrapper_Icon=app.ico
-#AutoIt3Wrapper_UseX64=y
-#AutoIt3Wrapper_Res_Description=Launch AppContainer
-#AutoIt3Wrapper_Res_Fileversion=1.0.0.0
-#AutoIt3Wrapper_Res_ProductVersion=1.0.0
-#AutoIt3Wrapper_Res_ProductName=LaunchAppContainer
-#AutoIt3Wrapper_Res_LegalCopyright=@ 2024 WildByDesign
-#AutoIt3Wrapper_Res_Language=1033
-#AutoIt3Wrapper_Res_HiDpi=P
-#AutoIt3Wrapper_Res_Icon_Add=app.ico
-#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
+#pragma compile(OriginalFilename, LaunchAppContainer)
+#pragma compile(Icon, app.ico)
+#pragma compile(x64, true)
+#pragma compile(FileDescription, Launch AppContainer)
+#pragma compile(FileVersion, 1.0.0)
+#pragma compile(ProductVersion, 1.0.0)
+#pragma compile(ProductName, LaunchAppContainer)
+#pragma compile(LegalCopyright, @ 2025 WildByDesign)
+#pragma compile(Compatibility, win10)
 
 #include <GUIConstants.au3>
 #include <File.au3>
@@ -45,7 +41,12 @@
 #include "includes\GUIDarkMode_v0.02mod.au3"
 #include "includes\GUIListViewEx.au3"
 
-_HiDpi_Ctrl_LazyInit(-4)
+; System aware DPI awareness
+DllCall("User32.dll", "bool", "SetProcessDPIAware")
+
+; Per-monitor V2 DPI awareness
+;DllCall("User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT" -4)
+
 
 If _Singleton("LaunchAppContainer", 1) = 0 Then
         $sMsg = " An instance of Launch AppContainer is already running. " & @CRLF
