@@ -1,61 +1,58 @@
-#RequireAdmin
-#NoTrayIcon
-
 #Region ; *** Dynamically added Include files ***
-#include <ButtonConstants.au3>                               ; added:12/10/24 21:49:28
-#include <GUIConstantsEx.au3>                                ; added:12/10/24 21:49:28
-#include <WindowsConstants.au3>                              ; added:12/10/24 21:52:00
-#include <ColorConstants.au3>                                ; added:12/10/24 22:21:06
-#include <WinAPIConv.au3>                                    ; added:12/11/24 06:05:30
-#include <WinAPIGdiInternals.au3>                            ; added:12/11/24 06:05:30
-#include <MsgBoxConstants.au3>                               ; added:12/11/24 08:43:45
-#include <GuiListView.au3>                                   ; added:12/11/24 09:22:02
-#include <ListViewConstants.au3>                             ; added:12/11/24 09:22:02
-#include <Array.au3>                                         ; added:12/11/24 09:45:11
-#include <FontConstants.au3>                                 ; added:12/11/24 12:03:11
-#include <WinAPISysInternals.au3>                            ; added:12/12/24 16:21:03
-#include <GuiToolTip.au3>                                    ; added:12/13/24 22:47:37
-#include <WinAPITheme.au3>                                   ; added:12/14/24 05:55:06
-#include <EditConstants.au3>                                 ; added:12/14/24 06:51:00
-#include <AutoItConstants.au3>                               ; added:12/14/24 07:55:31
-#include <StringConstants.au3>                               ; added:12/14/24 07:55:31
-#include <WinAPIProc.au3>                                    ; added:12/14/24 07:55:31
-#include <FileConstants.au3>                                 ; added:12/24/24 19:03:49
-#include <HeaderConstants.au3>                               ; added:12/24/24 19:03:49
-#include <StaticConstants.au3>                               ; added:12/24/24 19:03:49
-#include <StructureConstants.au3>                            ; added:12/24/24 19:03:49
-#include <WinAPISysWin.au3>                                  ; added:12/24/24 19:03:49
-#include <String.au3>                                        ; added:12/31/24 07:37:50
-#include <Misc.au3>                                          ; added:01/10/25 07:52:34
+#include <Array.au3>                                         ; added:01/24/25 06:43:50
+#include <AutoItConstants.au3>                               ; added:01/24/25 06:43:50
+#include <File.au3>                                          ; added:01/24/25 06:43:50
+#include <FileConstants.au3>                                 ; added:01/24/25 06:43:50
+#include <FontConstants.au3>                                 ; added:01/24/25 06:43:50
+#include <GUIConstantsEx.au3>                                ; added:01/24/25 06:43:50
+#include <GuiListView.au3>                                   ; added:01/24/25 06:43:50
+#include <GuiToolTip.au3>                                    ; added:01/24/25 06:43:50
+#include <HeaderConstants.au3>                               ; added:01/24/25 06:43:50
+#include <ListViewConstants.au3>                             ; added:01/24/25 06:43:50
+#include <Misc.au3>                                          ; added:01/24/25 06:43:50
+#include <MsgBoxConstants.au3>                               ; added:01/24/25 06:43:50
+#include <StaticConstants.au3>                               ; added:01/24/25 06:43:50
+#include <String.au3>                                        ; added:01/24/25 06:43:50
+#include <StringConstants.au3>                               ; added:01/24/25 06:43:50
+#include <StructureConstants.au3>                            ; added:01/24/25 06:43:50
+#include <WinAPIFiles.au3>                                   ; added:01/24/25 06:43:50
+#include <WinAPISysInternals.au3>                            ; added:01/24/25 06:43:50
+#include <WinAPISysWin.au3>                                  ; added:01/24/25 06:43:50
+#include <WinAPITheme.au3>                                   ; added:01/24/25 06:43:50
+#include <WindowsConstants.au3>                              ; added:01/24/25 06:43:50
 #EndRegion ; *** Dynamically added Include files ***
 
-#include <GUIConstants.au3>
-#include <File.au3>
-#Include <WinAPIEx.au3>
-#include <WinAPIFiles.au3>
-
 #include "includes\ExtMsgBox.au3"
-#include "includes\GuiCtrls_HiDpi.au3"
 #include "includes\GUIDarkMode_v0.02mod.au3"
 #include "includes\GUIListViewEx.au3"
 
+#RequireAdmin
+#NoTrayIcon
+
 #pragma compile(Out, _build\LearningMode.exe)
-#pragma compile(OriginalFilename, LearningMode.exe)
-#pragma compile(Icon, app.ico)
-#pragma compile(x64, true)
-#pragma compile(FileDescription, AppContainer Learning Mode)
-#pragma compile(FileVersion, 1.0.0)
-#pragma compile(ProductVersion, 1.0.0)
-#pragma compile(ProductName, AppContainerLearningMode)
-#pragma compile(LegalCopyright, @ 2025 WildByDesign)
-#pragma compile(Compatibility, win10)
+
+#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
+#AutoIt3Wrapper_Icon=app.ico
+#AutoIt3Wrapper_UseX64=y
+#AutoIt3Wrapper_Res_Description=AppContainer Learning Mode
+#AutoIt3Wrapper_res_requestedExecutionLevel=requireAdministrator
+#AutoIt3Wrapper_Res_Fileversion=1.0.0.0
+#AutoIt3Wrapper_Res_ProductVersion=1.0.0
+#AutoIt3Wrapper_Res_ProductName=AppContainerLearningMode
+#AutoIt3Wrapper_Res_LegalCopyright=@ 2025 WildByDesign
+#AutoIt3Wrapper_Res_Language=1033
+#AutoIt3Wrapper_Res_HiDpi=P
+#AutoIt3Wrapper_Res_Icon_Add=app.ico
+#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
 
-; System aware DPI awareness
-;DllCall("User32.dll", "bool", "SetProcessDPIAware")
+If @Compiled = 0 Then
+	; System aware DPI awareness
+	;DllCall("User32.dll", "bool", "SetProcessDPIAware")
 
-; Per-monitor V2 DPI awareness
-DllCall("User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT" -4)
+	; Per-monitor V2 DPI awareness
+	DllCall("User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT" -4)
+EndIf
 
 
 Global $tracepath = '"' & @LocalAppDataDir & '\Temp\AppContainerTrace.etl' & '"'

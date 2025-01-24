@@ -1,51 +1,50 @@
-#NoTrayIcon
-
 #Region ; *** Dynamically added Include files ***
-#include <ButtonConstants.au3>                               ; added:12/10/24 21:49:28
-#include <GUIConstantsEx.au3>                                ; added:12/10/24 21:49:28
-#include <WindowsConstants.au3>                              ; added:12/10/24 21:52:00
-#include <ColorConstants.au3>                                ; added:12/10/24 22:21:06
-#include <WinAPIConv.au3>                                    ; added:12/11/24 06:05:30
-#include <WinAPIGdiInternals.au3>                            ; added:12/11/24 06:05:30
-#include <MsgBoxConstants.au3>                               ; added:12/11/24 08:43:45
-#include <GuiListView.au3>                                   ; added:12/11/24 09:22:02
-#include <ListViewConstants.au3>                             ; added:12/11/24 09:22:02
-#include <Array.au3>                                         ; added:12/11/24 09:45:11
-#include <FontConstants.au3>                                 ; added:12/11/24 12:03:11
-#include <WinAPISysInternals.au3>                            ; added:12/12/24 16:21:03
-#include <GuiToolTip.au3>                                    ; added:12/13/24 22:47:37
-#include <WinAPITheme.au3>                                   ; added:12/14/24 05:55:06
-#include <EditConstants.au3>                                 ; added:12/14/24 06:51:00
-#include <AutoItConstants.au3>                               ; added:12/14/24 07:55:31
-#include <StringConstants.au3>                               ; added:12/14/24 07:55:31
-#include <WinAPIProc.au3>                                    ; added:12/14/24 07:55:31
-#include <Misc.au3>                                          ; added:01/10/25 07:48:01
+#include <Array.au3>                                         ; added:01/24/25 06:41:01
+#include <AutoItConstants.au3>                               ; added:01/24/25 06:41:01
+#include <ButtonConstants.au3>                               ; added:01/24/25 06:41:01
+#include <EditConstants.au3>                                 ; added:01/24/25 06:41:01
+#include <File.au3>                                          ; added:01/24/25 06:41:01
+#include <FontConstants.au3>                                 ; added:01/24/25 06:41:01
+#include <GUIConstantsEx.au3>                                ; added:01/24/25 06:41:01
+#include <GuiListView.au3>                                   ; added:01/24/25 06:41:01
+#include <GuiToolTip.au3>                                    ; added:01/24/25 06:41:01
+#include <ListViewConstants.au3>                             ; added:01/24/25 06:41:01
+#include <Misc.au3>                                          ; added:01/24/25 06:41:01
+#include <MsgBoxConstants.au3>                               ; added:01/24/25 06:41:01
+#include <StringConstants.au3>                               ; added:01/24/25 06:41:01
+#include <WinAPITheme.au3>                                   ; added:01/24/25 06:41:01
+#include <WindowsConstants.au3>                              ; added:01/24/25 06:41:01
 #EndRegion ; *** Dynamically added Include files ***
 
-#include <GUIConstants.au3>
-#include <File.au3>
-
 #include "includes\ExtMsgBox.au3"
-#include "includes\GuiCtrls_HiDpi.au3"
 #include "includes\GUIDarkMode_v0.02mod.au3"
 #include "includes\GUIListViewEx.au3"
 
+#NoTrayIcon
+
 #pragma compile(Out, _build\LaunchAppContainer.exe)
-#pragma compile(OriginalFilename, LaunchAppContainer.exe)
-#pragma compile(Icon, app.ico)
-#pragma compile(x64, true)
-#pragma compile(FileDescription, Launch AppContainer)
-#pragma compile(FileVersion, 1.0.0)
-#pragma compile(ProductVersion, 1.0.0)
-#pragma compile(ProductName, LaunchAppContainer)
-#pragma compile(LegalCopyright, @ 2025 WildByDesign)
-#pragma compile(Compatibility, win10)
 
-; System aware DPI awareness
-;DllCall("User32.dll", "bool", "SetProcessDPIAware")
+;#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
+#AutoIt3Wrapper_Icon=app.ico
+#AutoIt3Wrapper_UseX64=y
+#AutoIt3Wrapper_Res_Description=Launch AppContainer
+#AutoIt3Wrapper_Res_Fileversion=1.0.0.0
+#AutoIt3Wrapper_Res_ProductVersion=1.0.0
+#AutoIt3Wrapper_Res_ProductName=LaunchAppContainer
+#AutoIt3Wrapper_Res_LegalCopyright=@ 2024 WildByDesign
+#AutoIt3Wrapper_Res_Language=1033
+#AutoIt3Wrapper_Res_HiDpi=P
+#AutoIt3Wrapper_Res_Icon_Add=app.ico
+;#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
-; Per-monitor V2 DPI awareness
-DllCall("User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT" -4)
+
+If @Compiled = 0 Then
+	; System aware DPI awareness
+	;DllCall("User32.dll", "bool", "SetProcessDPIAware")
+
+	; Per-monitor V2 DPI awareness
+	DllCall("User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT" -4)
+EndIf
 
 
 If _Singleton("LaunchAppContainer", 1) = 0 Then
