@@ -42,10 +42,10 @@
 #pragma compile(Compatibility, win10)
 
 ; System aware DPI awareness
-DllCall("User32.dll", "bool", "SetProcessDPIAware")
+;DllCall("User32.dll", "bool", "SetProcessDPIAware")
 
 ; Per-monitor V2 DPI awareness
-;DllCall("User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT" -4)
+DllCall("User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT" -4)
 
 
 If _Singleton("LaunchAppContainer", 1) = 0 Then
