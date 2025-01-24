@@ -29,18 +29,10 @@ jobs:
     - name: Compile AutoIt3 files
       run: |
         $Aut2exe = "C:\Program Files (x86)\AutoIt3\Aut2exe\Aut2exe.exe"
-        $ArgsIn = " /in "
-        $ArgsOut = " /out "
-        $LaunchAppContainerIn = "LaunchAppContainer.au3"
-        $LaunchAppContainerOut = "_build\LaunchAppContainer.exe"
-        $LearningModeIn = "LearningMode.au3"
-        $LearningModeOut = "_build\LearningMode.exe"
-        $SetAppContainerACLIn = "SetAppContainerACL.au3"
-        $SetAppContainerACLOut = "_build\SetAppContainerACL.exe"
         New-Item -Type Directory -Name _build
-        & $Aut2exe + $ArgsIn + $LaunchAppContainerIn + $ArgsOut + $LaunchAppContainerOut
-        & $Aut2exe + $ArgsIn + $LearningModeIn + $ArgsOut + $LearningModeOut
-        & $Aut2exe + $ArgsIn + $SetAppContainerACLIn + $ArgsOut + $SetAppContainerACLOut
+        & $Aut2exe /in LaunchAppContainer.au3 /out _build\LaunchAppContainer.exe
+        & $Aut2exe /in LearningMode.au3 /out _build\LearningMode.exe
+        & $Aut2exe /in SetAppContainerACL.au3 /out _build\SetAppContainerACL.exe
     - name: Archive binaries
       uses: actions/upload-artifact@v4
       with:
