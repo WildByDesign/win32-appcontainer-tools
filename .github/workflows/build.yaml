@@ -44,7 +44,13 @@ jobs:
       if: ${{ inputs.release }}
       with:
         draft: true
+        owner: WildByDesign
+        repo: win32-appcontainer-tools
         files: |
           _build\LaunchAppContainer.exe
           _build\LearningMode.exe
           _build\SetAppContainerACL.exe
+          bin\AppContainerSid.exe
+          bin\LaunchAppContainer.exe
+          bin\SetACL.exe
+          data\capslist.txt
