@@ -49,10 +49,10 @@ jobs:
       with:
         draft: true
         files: |
-          _build\LaunchAppContainer.exe
-          _build\LearningMode.exe
-          _build\SetAppContainerACL.exe
-          bin\AppContainerSid.exe
-          bin\LaunchAppContainer.exe
-          bin\SetACL.exe
-          data\capslist.txt
+          _build\\LaunchAppContainer.exe
+          _build\\LearningMode.exe
+          _build\\SetAppContainerACL.exe
+          bin\\AppContainerSid.exe
+          bin\\LaunchAppContainer.exe
+          bin\\SetACL.exe
+          data\\capslist.txt
