@@ -52,4 +52,6 @@ jobs:
           _build\\LaunchAppContainer.exe
           _build\\LearningMode.exe
           _build\\SetAppContainerACL.exe
-          bin\\\*
+          bin\\AppContainerSid.exe
+          bin\\SetACL.exe
+          data\\capslist.txt
