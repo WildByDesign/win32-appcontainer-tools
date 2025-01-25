@@ -48,6 +48,8 @@ jobs:
       if: ${{ inputs.release }}
       with:
         draft: true
+        asset_name: test.zip
+        asset_content_type: application/zip
         files: |
           _build\\LaunchAppContainer.exe
           _build\\LearningMode.exe
