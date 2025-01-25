@@ -52,4 +52,4 @@ jobs:
           _build\\LaunchAppContainer.exe
           _build\\LearningMode.exe
           _build\\SetAppContainerACL.exe
-          bin\\*
+          bin\\\*
