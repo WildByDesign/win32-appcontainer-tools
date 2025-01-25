@@ -14,6 +14,10 @@ on:
         required: true
         default: false
         type: boolean
+permissions:
+  contents: read
+  actions: read
+  checks: write
 jobs:
   build:
     runs-on: windows-latest
@@ -44,8 +48,6 @@ jobs:
       if: ${{ inputs.release }}
       with:
         draft: true
-        owner: WildByDesign
-        repo: win32-appcontainer-tools
         files: |
           _build\LaunchAppContainer.exe
           _build\LearningMode.exe
