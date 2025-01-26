@@ -26,8 +26,8 @@
 #pragma compile(Icon, app.ico)
 #pragma compile(x64, true)
 #pragma compile(FileDescription, Set AppContainer ACL)
-#pragma compile(FileVersion, 1.0.0)
-#pragma compile(ProductVersion, 1.0.0)
+#pragma compile(FileVersion, 1.0.2)
+#pragma compile(ProductVersion, 1.0.2)
 #pragma compile(ProductName, SetAppContainerACL)
 #pragma compile(LegalCopyright, @ 2025 WildByDesign)
 #pragma compile(Compatibility, win10)
@@ -191,6 +191,18 @@ Else
 	_ExtMsgBoxSet(Default)
 	;_ExtMsgBoxSet(1, 5, -1, -1, -1, "Consolas", 800, 800)
 	_ExtMsgBoxSet(1, 4, -1, -1, 9, -1, 1200)
+EndIf
+
+
+; Ensure that the binaries exist that Set AppContainer ACL depends on
+Local Const $sSetACLbin = @ScriptDir & "\bin\SetACL.exe"
+Local Const $sAppContainerSidbin = @ScriptDir & "\bin\AppContainerSid.exe"
+Local $SetACLbinExists = FileExists($sSetACLbin)
+Local $AppContainerSidbinExists = FileExists($sAppContainerSidbin)
+
+If $SetACLbinExists And $AppContainerSidbinExists Then
+Else
+	_ExtMsgBox (0 & ";" & @ScriptDir & "\LaunchAppContainer.exe", 0, "Set AppContainer ACL", " Binaries from " & @ScriptDir & "\bin" & " are missing. " & @CRLF & @CRLF & " Set AppContainer ACL depends on these binaries and will not function correctly. " & @CRLF)
 EndIf
 
 

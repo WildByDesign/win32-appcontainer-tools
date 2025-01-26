@@ -27,8 +27,8 @@
 #pragma compile(Icon, app.ico)
 #pragma compile(x64, true)
 #pragma compile(FileDescription, Launch AppContainer)
-#pragma compile(FileVersion, 1.0.0)
-#pragma compile(ProductVersion, 1.0.0)
+#pragma compile(FileVersion, 1.0.2)
+#pragma compile(ProductVersion, 1.0.2)
 #pragma compile(ProductName, LaunchAppContainer)
 #pragma compile(LegalCopyright, @ 2025 WildByDesign)
 #pragma compile(Compatibility, win10)
@@ -215,6 +215,26 @@ Else
 	_ExtMsgBoxSet(Default)
 	;_ExtMsgBoxSet(1, 5, -1, -1, -1, "Consolas", 800, 800)
 	_ExtMsgBoxSet(1, 4, -1, -1, 9, -1, 1200)
+EndIf
+
+; Ensure that the binaries exist that Launch AppContainer depends on
+Local Const $sLaunchAppContainerbin = @ScriptDir & "\bin\LaunchAppContainer.exe"
+Local Const $sAppContainerSidbin = @ScriptDir & "\bin\AppContainerSid.exe"
+Local $LaunchAppContainerbinExists = FileExists($sLaunchAppContainerbin)
+Local $AppContainerSidbinExists = FileExists($sAppContainerSidbin)
+
+If $LaunchAppContainerbinExists And $AppContainerSidbinExists Then
+Else
+	_ExtMsgBox (0 & ";" & @ScriptDir & "\LaunchAppContainer.exe", 0, "Launch AppContainer", " Binaries from " & @ScriptDir & "\bin" & " are missing. " & @CRLF & @CRLF & " Launch AppContainer depends on these binaries and will not function correctly. " & @CRLF)
+EndIf
+
+; Ensure that the capabilities list exists that Launch AppContainer depends on
+Local Const $sCapslist = @ScriptDir & "\data\capslist.txt"
+Local $CapslistExists = FileExists($sCapslist)
+
+If $CapslistExists Then
+Else
+	_ExtMsgBox (0 & ";" & @ScriptDir & "\LaunchAppContainer.exe", 0, "Launch AppContainer", " Capabilities list from " & @ScriptDir & "\data" & " is missing. " & @CRLF & @CRLF & " Launch AppContainer depends on this list and will not function correctly. " & @CRLF)
 EndIf
 
 
