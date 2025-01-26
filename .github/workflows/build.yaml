@@ -47,6 +47,9 @@ jobs:
       shell: pwsh
       run: |
         7z a test.zip _build\
+        7z a test.zip bin\
+        7z a test.zip data\
+        7z a test.zip LaunchAppContainer.ini
     - name: Create release
       uses: softprops/action-gh-release@v2
       if: ${{ inputs.release }}
