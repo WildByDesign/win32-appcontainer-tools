@@ -42,7 +42,7 @@ jobs:
       with:
         name: executable-files
         path: |
-          _build
+          win32-appcontainer-tools
     - name: Zip files
       shell: pwsh
       run: |
