@@ -46,10 +46,10 @@ jobs:
     - name: Zip files
       shell: pwsh
       run: |
-        7z a test.zip .\_build\*
-        7z a test.zip bin\
-        7z a test.zip data\
-        7z a test.zip LaunchAppContainer.ini
+        7z a win32-appcontainer-tools.zip .\_build\*
+        7z a win32-appcontainer-tools.zip bin\
+        7z a win32-appcontainer-tools.zip data\
+        7z a win32-appcontainer-tools.zip LaunchAppContainer.ini
     - name: Create release
       uses: softprops/action-gh-release@v2
       if: ${{ inputs.release }}
@@ -57,4 +57,4 @@ jobs:
         draft: true
         tag_name: 1.0.1
         files: |
-          test.zip
+          win32-appcontainer-tools.zip
