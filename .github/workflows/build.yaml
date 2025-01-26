@@ -55,7 +55,7 @@ jobs:
       if: ${{ inputs.release }}
       with:
         draft: true
-        name: win32-appcontainer-tools
-        tag_name: 1.0.1
+        name: win32-appcontainer-tools ${{ inputs.version }}
+        tag_name: ${{ inputs.version }}
         files: |
           win32-appcontainer-tools.zip
