@@ -46,7 +46,7 @@ jobs:
     - name: Zip files
       shell: pwsh
       run: |
-        7z a test.zip _build\
+        7z a test.zip .\_build\*
         7z a test.zip bin\
         7z a test.zip data\
         7z a test.zip LaunchAppContainer.ini
@@ -56,10 +56,4 @@ jobs:
       with:
         draft: true
         files: |
-          _build\\LaunchAppContainer.exe
-          _build\\LearningMode.exe
-          _build\\SetAppContainerACL.exe
-          bin\\AppContainerSid.exe
-          bin\\SetACL.exe
-          data\\capslist.txt
           test.zip
