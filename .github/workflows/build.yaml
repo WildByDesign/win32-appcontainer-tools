@@ -62,5 +62,4 @@ jobs:
         name: win32-appcontainer-tools ${{ inputs.version }}
         tag_name: ${{ inputs.version }}
         files: |
-          win32-appcontainer-tools.zip
           win32-appcontainer-tools-${{ inputs.version }}.zip
