@@ -33,10 +33,10 @@ jobs:
     - name: Compile AutoIt3 files
       run: |
         $Aut2exe = "C:\Program Files (x86)\AutoIt3\Aut2exe\Aut2exe.exe"
-        New-Item -Type Directory -Name _build
-        & $Aut2exe /in LaunchAppContainer.au3 /out _build\LaunchAppContainer.exe
-        & $Aut2exe /in LearningMode.au3 /out _build\LearningMode.exe
-        & $Aut2exe /in SetAppContainerACL.au3 /out _build\SetAppContainerACL.exe
+        New-Item -Type Directory -Name _build\win32-appcontainer-tools
+        & $Aut2exe /in LaunchAppContainer.au3 /out _build\win32-appcontainer-tools\LaunchAppContainer.exe
+        & $Aut2exe /in LearningMode.au3 /out _build\win32-appcontainer-tools\LearningMode.exe
+        & $Aut2exe /in SetAppContainerACL.au3 /out _build\win32-appcontainer-tools\SetAppContainerACL.exe
     - name: Archive binaries
       uses: actions/upload-artifact@v4
       with:
@@ -46,7 +46,7 @@ jobs:
     - name: Zip files
       shell: pwsh
       run: |
-        7z a test.zip .\_build\*
+        7z a test.zip _build\win32-appcontainer-tools\
         7z a test.zip bin\
         7z a test.zip data\
         7z a test.zip LaunchAppContainer.ini
