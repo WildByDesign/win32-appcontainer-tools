@@ -1,3 +1,20 @@
+#RequireAdmin
+#NoTrayIcon
+
+#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
+#AutoIt3Wrapper_Icon=app.ico
+#AutoIt3Wrapper_UseX64=y
+#AutoIt3Wrapper_Res_Description=AppContainer Learning Mode
+#AutoIt3Wrapper_res_requestedExecutionLevel=requireAdministrator
+#AutoIt3Wrapper_Res_Fileversion=1.0.2
+#AutoIt3Wrapper_Res_ProductVersion=1.0.2
+#AutoIt3Wrapper_Res_ProductName=AppContainerLearningMode
+#AutoIt3Wrapper_Res_LegalCopyright=@ 2025 WildByDesign
+#AutoIt3Wrapper_Res_Language=1033
+#AutoIt3Wrapper_Res_HiDpi=P
+#AutoIt3Wrapper_Res_Icon_Add=app.ico
+#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
+
 #Region ; *** Dynamically added Include files ***
 #include <Array.au3>                                         ; added:01/24/25 06:43:50
 #include <AutoItConstants.au3>                               ; added:01/24/25 06:43:50
@@ -26,26 +43,13 @@
 #include "includes\GUIDarkMode_v0.02mod.au3"
 #include "includes\GUIListViewEx.au3"
 
-#RequireAdmin
-#NoTrayIcon
 
-#pragma compile(Out, _build\LearningMode.exe)
-#pragma compile(OriginalFilename, LearningMode.exe)
-#pragma compile(Icon, app.ico)
-#pragma compile(x64, true)
-#pragma compile(FileDescription, AppContainer Learning Mode)
-#pragma compile(FileVersion, 1.0.2)
-#pragma compile(ProductVersion, 1.0.2)
-#pragma compile(ProductName, AppContainerLearningMode)
-#pragma compile(LegalCopyright, @ 2025 WildByDesign)
-#pragma compile(Compatibility, win10)
-#pragma compile(ExecLevel, requireAdministrator)
-
-; System aware DPI awareness
-;DllCall("User32.dll", "bool", "SetProcessDPIAware")
-
-; Per-monitor V2 DPI awareness
-DllCall("User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT" -4)
+If @Compiled = 0 Then
+	; System aware DPI awareness
+	;DllCall("User32.dll", "bool", "SetProcessDPIAware")
+	; Per-monitor V2 DPI awareness
+	DllCall("User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT" -4)
+EndIf
 
 
 Global $tracepath = '"' & @LocalAppDataDir & '\Temp\AppContainerTrace.etl' & '"'
