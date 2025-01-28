@@ -47,9 +47,10 @@ jobs:
       with:
         name: executable-files
         path: |
-          LaunchAppContainer*.exe
-          LearningMode*.exe
-          SetAppContainerACL*.exe
+          LaunchAppContainer.exe
+          LearningMode.exe
+          SetAppContainerACL.exe
+        if-no-files-found: error
     - name: Zip files
       shell: pwsh
       run: |
