@@ -76,5 +76,3 @@ jobs:
             LaunchAppContainer.exe
             LearningMode.exe
             SetAppContainerACL.exe
-          env:
-            GITHUB_TOKEN: ${{ secrets.win32-appcontainer-tools_PAT }}
