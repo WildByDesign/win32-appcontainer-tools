@@ -7,6 +7,7 @@
 #AutoIt3Wrapper_Res_Fileversion=1.0.2
 #AutoIt3Wrapper_Res_ProductVersion=1.0.2
 #AutoIt3Wrapper_Res_ProductName=SetAppContainerACL
+#AutoIt3Wrapper_Outfile_x64=SetAppContainerACL.exe
 #AutoIt3Wrapper_Res_LegalCopyright=@ 2025 WildByDesign
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_HiDpi=P
