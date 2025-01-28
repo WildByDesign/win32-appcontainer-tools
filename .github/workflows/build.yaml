@@ -39,7 +39,7 @@ jobs:
     - name: Compile AutoIt3 files
       run: |
         $Aut2exe = "C:\Program Files (x86)\AutoIt3\Aut2exe\Aut2exe.exe"
-        $Aut2exe "`"${env:ProgramFiles(x86)}\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.au3`" /NoStatus /prod /in LaunchAppContainer.au3" -NoNewWindow -Wait
+        & $Aut2exe "`"${env:ProgramFiles(x86)}\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.au3`" /NoStatus /prod /in LaunchAppContainer.au3" -NoNewWindow -Wait
         & $Aut2exe "`"${env:ProgramFiles(x86)}\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.au3`" /NoStatus /prod /in LearningMode.au3" -NoNewWindow -Wait
         & $Aut2exe "`"${env:ProgramFiles(x86)}\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.au3`" /NoStatus /prod /in SetAppContainerACL.au3" -NoNewWindow -Wait
     - name: Archive binaries
