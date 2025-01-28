@@ -42,24 +42,29 @@ jobs:
       - name: Compile
         run: |
           Start-Process "${env:ProgramFiles(x86)}\AutoIt3\AutoIt3.exe" "`"${env:ProgramFiles(x86)}\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.au3`" /NoStatus /prod /in LaunchAppContainer.au3" -NoNewWindow -Wait
-          sha256sum -b LaunchAppContainer*.exe > checksums.sha256
+          Start-Process "${env:ProgramFiles(x86)}\AutoIt3\AutoIt3.exe" "`"${env:ProgramFiles(x86)}\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.au3`" /NoStatus /prod /in LearningMode.au3" -NoNewWindow -Wait
+          Start-Process "${env:ProgramFiles(x86)}\AutoIt3\AutoIt3.exe" "`"${env:ProgramFiles(x86)}\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.au3`" /NoStatus /prod /in SetAppContainerACL.au3" -NoNewWindow -Wait
       - uses: actions/upload-artifact@v4
         with:
           name: Build Binaries
           path: |
             LaunchAppContainer*.exe
-            checksums.sha256
+            LearningMode*.exe
+            SetAppContainerACL*.exe
           if-no-files-found: error
       - name: Zip package
         if: startsWith(github.ref, 'refs/tags/')
-        run: 7z a LaunchAppContainer.zip LaunchAppContainer*.exe checksums.sha256
+        run: 7z a win32-appcontainer-tools.zip LaunchAppContainer*.exe LearningMode*.exe SetAppContainerACL*.exe
+          7z a win32-appcontainer-tools.zip bin\
+          7z a win32-appcontainer-tools.zip data\
+          7z a win32-appcontainer-tools.zip LaunchAppContainer.ini
       - name: Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
             LaunchAppContainer.exe
-            LaunchAppContainer.zip
-            checksums.sha256
+            LearningMode.exe
+            SetAppContainerACL.exe
         env:
-          GITHUB_TOKEN: ${{ secrets.LaunchAppContainer_PAT }}
+          GITHUB_TOKEN: ${{ secrets.win32-appcontainer-tools_PAT }}
