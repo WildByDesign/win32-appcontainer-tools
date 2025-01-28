@@ -61,10 +61,6 @@ jobs:
           7z a win32-appcontainer-tools.zip bin\
           7z a win32-appcontainer-tools.zip data\
           7z a win32-appcontainer-tools.zip LaunchAppContainer.ini
-      - name: Rename archive with tag
-        shell: pwsh
-        run: |
-          Copy-Item win32-appcontainer-tools.zip -Destination win32-appcontainer-tools-${{ inputs.version }}.zip
       - name: Create release
         uses: softprops/action-gh-release@v2
         if: ${{ inputs.release }}
@@ -76,3 +72,4 @@ jobs:
             LaunchAppContainer.exe
             LearningMode.exe
             SetAppContainerACL.exe
+            win32-appcontainer-tools.zip
