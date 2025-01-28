@@ -28,25 +28,35 @@ jobs:
         $Uri = "https://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/$Setup"
         Invoke-WebRequest -Uri $Uri -OutFile $Setup
         & .\$Setup /S
+    - name: Install SciTE4AutoIt3
+      run: |
+        $Setup2 = "SciTE4AutoIt3.exe"
+        $Uri2 = "https://www.autoitscript.com/cgi-bin/getfile.pl?../autoit3/scite/download/$Setup2"
+        Invoke-WebRequest -Uri $Uri2 -OutFile $Setup2
+        & .\$Setup2 /S
     - name: Checkout repository
       uses: actions/checkout@v4
     - name: Compile AutoIt3 files
       run: |
         $Aut2exe = "C:\Program Files (x86)\AutoIt3\Aut2exe\Aut2exe.exe"
         New-Item -Type Directory -Name _build
-        & $Aut2exe /in LaunchAppContainer.au3 /out _build\LaunchAppContainer.exe
-        & $Aut2exe /in LearningMode.au3 /out _build\LearningMode.exe
-        & $Aut2exe /in SetAppContainerACL.au3 /out _build\SetAppContainerACL.exe
+        & $Aut2exe "`"${env:ProgramFiles(x86)}\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.au3`" /NoStatus /prod /in LaunchAppContainer.au3" -NoNewWindow -Wait
+        & $Aut2exe "`"${env:ProgramFiles(x86)}\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.au3`" /NoStatus /prod /in LearningMode.au3" -NoNewWindow -Wait
+        & $Aut2exe "`"${env:ProgramFiles(x86)}\AutoIt3\SciTE\AutoIt3Wrapper\AutoIt3Wrapper.au3`" /NoStatus /prod /in SetAppContainerACL.au3" -NoNewWindow -Wait
     - name: Archive binaries
       uses: actions/upload-artifact@v4
       with:
         name: executable-files
         path: |
-          _build
+          LaunchAppContainer*.exe
+          LearningMode*.exe
+          SetAppContainerACL*.exe
     - name: Zip files
       shell: pwsh
       run: |
-        7z a win32-appcontainer-tools.zip .\_build\*
+        7z a win32-appcontainer-tools.zip LaunchAppContainer.exe
+        7z a win32-appcontainer-tools.zip LearningMode.exe
+        7z a win32-appcontainer-tools.zip SetAppContainerACL.exe
         7z a win32-appcontainer-tools.zip bin\
         7z a win32-appcontainer-tools.zip data\
         7z a win32-appcontainer-tools.zip LaunchAppContainer.ini
@@ -62,4 +72,6 @@ jobs:
         name: win32-appcontainer-tools ${{ inputs.version }}
         tag_name: ${{ inputs.version }}
         files: |
-          win32-appcontainer-tools-${{ inputs.version }}.zip
+          LaunchAppContainer.exe
+          LearningMode.exe
+          SetAppContainerACL.exe
