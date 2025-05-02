@@ -4,8 +4,8 @@
 #AutoIt3Wrapper_Icon=app.ico
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=Launch AppContainer
-#AutoIt3Wrapper_Res_Fileversion=1.0.2
-#AutoIt3Wrapper_Res_ProductVersion=1.0.2
+#AutoIt3Wrapper_Res_Fileversion=1.1.0
+#AutoIt3Wrapper_Res_ProductVersion=1.1.0
 #AutoIt3Wrapper_Res_ProductName=LaunchAppContainer
 #AutoIt3Wrapper_Outfile_x64=LaunchAppContainer.exe
 #AutoIt3Wrapper_Res_LegalCopyright=@ 2025 WildByDesign
@@ -794,7 +794,7 @@ $OutputLabelHeight = $aPos[3]
 ;GUICtrlSetFont($OutputLabel, 10, $FW_BOLD, -1, "Segoe UI")
 ;$OutputText = GUICtrlCreateInput("", 15, 500, 985, 88, $ES_MULTILINE + $ES_AUTOVSCROLL + $WS_VSCROLL, 0)
 
-$OutputText = GUICtrlCreateInput("", 15, $OutputLabelPosV + $TitleSpaceVert, $OutputBoxWidthHelper, $OutputBoxHeight, $ES_MULTILINE + $ES_AUTOVSCROLL, 0)
+$OutputText = GUICtrlCreateEdit("", 15, $OutputLabelPosV + $TitleSpaceVert, $OutputBoxWidthHelper, $OutputBoxHeight, $ES_MULTILINE + $ES_AUTOVSCROLL + $ES_READONLY, 0)
 GUICtrlSetResizing(-1, $GUI_DOCKALL)
 
 
@@ -1008,7 +1008,7 @@ $ACCWD = @LocalAppDataDir & "\Packages\" & $MonikerLower & "\AC"
 
 Local $o_Pid2 = Run(@ComSpec & " /c " & @ScriptDir & "\bin\AppContainerSid.exe" & " " & $Moniker, @ScriptDir, @SW_HIDE, $STDOUT_CHILD)
 
-ProcessWaitClose($o_Pid2)
+ProcessWaitCloseEx($o_Pid2)
 $out2 = StdoutRead($o_Pid2)
 
 Global $ACSID = StringStripWS($out2, $STR_STRIPSPACES + $STR_STRIPLEADING + $STR_STRIPTRAILING)
@@ -1126,7 +1126,7 @@ GUICtrlSetData($OutputText, "AppContainer SID: " & @TAB & $ACSID & @CRLF & "AppC
 
 EndIf
 
-ProcessWaitClose($o_Pid)
+ProcessWaitCloseEx($o_Pid)
 $out = StdoutRead($o_Pid)
 
 Local $string0 = StringStripWS($out, $STR_STRIPSPACES + $STR_STRIPLEADING + $STR_STRIPTRAILING)
@@ -1184,11 +1184,77 @@ Func CheckPermissive2()
 Endfunc
 
 
+Func ProcessWaitCloseEx($iPID)
+	While ProcessExists($iPID) And Sleep(10)
+	WEnd
+EndFunc
+
+
+Func LPACcheckBox()
+	; $GUI_CHECKED (1), $GUI_UNCHECKED (4)
+	$LPACCheckboxRead = GUICtrlRead($LPACCheckbox)
+	If $LPACCheckboxRead = 4 Then
+		GUICtrlSetState($LPACCheckbox, $GUI_CHECKED)
+	ElseIf $LPACCheckboxRead = 1 Then
+		GUICtrlSetState($LPACCheckbox, $GUI_UNCHECKED)
+	EndIf
+	; do another read to keep status
+	$LPACCheckboxRead = GUICtrlRead($LPACCheckbox)
+EndFunc
+
+
+Func Win32kcheckBox()
+	; $GUI_CHECKED (1), $GUI_UNCHECKED (4)
+	$Win32kCheckboxRead = GUICtrlRead($Win32kCheckbox)
+	If $Win32kCheckboxRead = 4 Then
+		GUICtrlSetState($Win32kCheckbox, $GUI_CHECKED)
+	ElseIf $Win32kCheckboxRead = 1 Then
+		GUICtrlSetState($Win32kCheckbox, $GUI_UNCHECKED)
+	EndIf
+	; do another read to keep status
+	$Win32kCheckboxRead = GUICtrlRead($Win32kCheckbox)
+EndFunc
+
+
+Func DeleteACCheckbox()
+	; $GUI_CHECKED (1), $GUI_UNCHECKED (4)
+	$DeleteACCheckboxRead = GUICtrlRead($DeleteACCheckbox)
+	If $DeleteACCheckboxRead = 4 Then
+		GUICtrlSetState($DeleteACCheckbox, $GUI_CHECKED)
+	ElseIf $DeleteACCheckboxRead = 1 Then
+		GUICtrlSetState($DeleteACCheckbox, $GUI_UNCHECKED)
+	EndIf
+	; do another read to keep status
+	$DeleteACCheckboxRead = GUICtrlRead($DeleteACCheckbox)
+EndFunc
+
+
+Func PermissiveModeCheckbox()
+	; $GUI_CHECKED (1), $GUI_UNCHECKED (4)
+	$PermissiveModeCheckboxRead = GUICtrlRead($PermissiveModeCheckbox)
+	If $PermissiveModeCheckboxRead = 4 Then
+		GUICtrlSetState($PermissiveModeCheckbox, $GUI_CHECKED)
+	ElseIf $PermissiveModeCheckboxRead = 1 Then
+		GUICtrlSetState($PermissiveModeCheckbox, $GUI_UNCHECKED)
+	EndIf
+	; do another read to keep status
+	$PermissiveModeCheckboxRead = GUICtrlRead($PermissiveModeCheckbox)
+EndFunc
+
+
 While 1
     $MSG = GUIGetMsg()
     Select
         Case $MSG = $GUI_EVENT_CLOSE
             Exit
+		Case $MSG = $LPACLabel
+			LPACcheckBox()
+		Case $MSG = $Win32kLabel
+			Win32kcheckBox()
+		Case $MSG = $DeleteACLabel
+			DeleteACcheckBox()
+		Case $MSG = $PermissiveModeLabel
+			PermissiveModecheckBox()
         Case $MSG = $StartupDirButton
 			StartupDir()
 		Case $MSG = $ProgramButton

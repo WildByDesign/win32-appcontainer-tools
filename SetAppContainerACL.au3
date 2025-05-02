@@ -4,13 +4,13 @@
 #AutoIt3Wrapper_Icon=app.ico
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=Set AppContainer ACL
-#AutoIt3Wrapper_Res_Fileversion=1.0.2
-#AutoIt3Wrapper_Res_ProductVersion=1.0.2
+#AutoIt3Wrapper_Res_Fileversion=1.1.0
+#AutoIt3Wrapper_Res_ProductVersion=1.1.0
 #AutoIt3Wrapper_Res_ProductName=SetAppContainerACL
 #AutoIt3Wrapper_Outfile_x64=SetAppContainerACL.exe
 #AutoIt3Wrapper_Res_LegalCopyright=@ 2025 WildByDesign
 #AutoIt3Wrapper_Res_Language=1033
-#AutoIt3Wrapper_Res_HiDpi=P
+#AutoIt3Wrapper_Res_HiDpi=Y
 #AutoIt3Wrapper_Res_Icon_Add=app.ico
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
@@ -39,7 +39,7 @@ If @Compiled = 0 Then
 	; System aware DPI awareness
 	;DllCall("User32.dll", "bool", "SetProcessDPIAware")
 	; Per-monitor V2 DPI awareness
-	DllCall("User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT" -4)
+	DllCall("User32.dll", "bool", "SetProcessDpiAwarenessContext" , "HWND", "DPI_AWARENESS_CONTEXT" -2)
 EndIf
 
 If _Singleton("SetAppContainerACL", 1) = 0 Then
@@ -382,7 +382,7 @@ $aFolderACL[0] = "Full"
 $aFolderACL[1] = "RX"
 
 
-Local $FolderACLCombo = GUICtrlCreateCombo("|", $FolderACLButtonPosH + $ButtonSpaceHor, $FolderACLLabelHeight + $TitleSpaceVert, $BigComboWidth, $AutoTextHeight)
+Local $FolderACLCombo = GUICtrlCreateCombo("|", $FolderACLButtonPosH + $ButtonSpaceHor, $FolderACLLabelHeight + $TitleSpaceVert, $BigComboWidth, $AutoTextHeight, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL, $WS_VSCROLL))
 GUICtrlSetResizing(-1, $GUI_DOCKALL)
 ;GUICtrlSetData($FolderACLCombo, "RX")
 $hFolderACLCombo = GUICtrlGetHandle($FolderACLCombo)
@@ -494,7 +494,7 @@ $aFileACL[0] = "Full"
 $aFileACL[1] = "RX"
 
 
-Local $FileACLCombo = GUICtrlCreateCombo("|", $FileACLButtonPosH + $ButtonSpaceHor, $FileACLLabelHeight + $TitleSpaceVert, $BigComboWidth, $AutoTextHeight)
+Local $FileACLCombo = GUICtrlCreateCombo("|", $FileACLButtonPosH + $ButtonSpaceHor, $FileACLLabelHeight + $TitleSpaceVert, $BigComboWidth, $AutoTextHeight, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL, $WS_VSCROLL))
 GUICtrlSetResizing(-1, $GUI_DOCKALL)
 ;GUICtrlSetData($FileACLCombo, "RX")
 $hFileACLCombo = GUICtrlGetHandle($FileACLCombo)
@@ -594,7 +594,7 @@ $aRegistryACL[0] = "Full"
 $aRegistryACL[1] = "Read"
 
 
-Local $RegistryACLCombo = GUICtrlCreateCombo("|", $RegistryACLTextPosH + $ButtonSpaceHor + 4, $RegistryACLLabelHeight + $TitleSpaceVert, $BigComboWidth, $AutoTextHeight)
+Local $RegistryACLCombo = GUICtrlCreateCombo("|", $RegistryACLTextPosH + $ButtonSpaceHor + 4, $RegistryACLLabelHeight + $TitleSpaceVert, $BigComboWidth, $AutoTextHeight, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL, $WS_VSCROLL))
 GUICtrlSetResizing(-1, $GUI_DOCKALL)
 $hRegistryACLCombo = GUICtrlGetHandle($RegistryACLCombo)
 
@@ -712,7 +712,7 @@ _GUIToolTip_AddTool($hToolTip2, 0, _
 GUISetFont(10, $FW_NORMAL, -1, $MainFont)
 
 
-Local $DriveACLCombo = GUICtrlCreateCombo("|", 15, $DriveACLLabelHeight + $TitleSpaceVert, $SmallComboWidth, $AutoTextHeight)
+Local $DriveACLCombo = GUICtrlCreateCombo("|", 15, $DriveACLLabelHeight + $TitleSpaceVert, $SmallComboWidth, $AutoTextHeight, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL, $WS_VSCROLL))
 GUICtrlSetResizing(-1, $GUI_DOCKALL)
 $hDriveACLCombo = GUICtrlGetHandle($DriveACLCombo)
 
@@ -755,7 +755,7 @@ $OutputLabelHeight = $aPos[3]
 ;$OutputBoxWidthHelper = $RegistryACLTextWidth + $ButtonSpaceHor + $RegistryACLComboWidth + $ButtonSpaceHor + $RegistryACLButtonWidth
 $OutputBoxWidthHelper = $RegistryACLTextWidth + $ButtonSpaceHor + 4 + $RegistryACLComboWidth + $ButtonSpaceHor + $RegistryACLButtonWidth
 
-$OutputText = GUICtrlCreateInput("", 15, $OutputLabelPosV + $TitleSpaceVert, $OutputBoxWidthHelper + 20, 88, $ES_MULTILINE + $ES_AUTOVSCROLL, 0)
+$OutputText = GUICtrlCreateEdit("", 15, $OutputLabelPosV + $TitleSpaceVert, $OutputBoxWidthHelper + 20, 88, $ES_MULTILINE + $ES_AUTOVSCROLL + $ES_READONLY, 0)
 GUICtrlSetResizing(-1, $GUI_DOCKALL)
 
 
@@ -884,7 +884,7 @@ Func BrowseFoldersSetACL()
 
 		Local $o_Pid2 = Run(@ComSpec & " /c " & @ScriptDir & "\bin\AppContainerSid.exe" & " " & $Moniker, @ScriptDir, @SW_HIDE, $STDOUT_CHILD)
 
-		ProcessWaitClose($o_Pid2)
+		ProcessWaitCloseEx($o_Pid2)
 		$out2 = StdoutRead($o_Pid2)
 
 		$ACSID = StringStripWS($out2, $STR_STRIPSPACES + $STR_STRIPLEADING + $STR_STRIPTRAILING)
@@ -892,7 +892,7 @@ Func BrowseFoldersSetACL()
 		Local $o_Pid = Run(@ComSpec & " /c " & $icacls & " " & $ACLFolder & $grant & $ACSID & $perms, @SystemDir, @SW_HIDE, $STDOUT_CHILD)
 		;_ExtMsgBox (0 & ";" & @ScriptDir & "\SetAppContainerACL.exe", 0, "Set AppContainer ACL", $icacls & " " & $ACLFolder & $grant & $ACSID & $perms)
 
-		ProcessWaitClose($o_Pid)
+		ProcessWaitCloseEx($o_Pid)
 		$out = StdoutRead($o_Pid)
 		$icaclsmsg = StringStripWS($out, $STR_STRIPLEADING + $STR_STRIPTRAILING)
 		;_ExtMsgBox (0 & ";" & @ScriptDir & "\SetAppContainerACL.exe", 0, "Set AppContainer ACL", $out)
@@ -937,7 +937,7 @@ Func BrowseFilesSetACL()
 		EndIf
 		Local $o_Pid2 = Run(@ComSpec & " /c " & @ScriptDir & "\bin\AppContainerSid.exe" & " " & $Moniker, @ScriptDir, @SW_HIDE, $STDOUT_CHILD)
 
-		ProcessWaitClose($o_Pid2)
+		ProcessWaitCloseEx($o_Pid2)
 		$out2 = StdoutRead($o_Pid2)
 
 		$ACSID = StringStripWS($out2, $STR_STRIPSPACES + $STR_STRIPLEADING + $STR_STRIPTRAILING)
@@ -945,7 +945,7 @@ Func BrowseFilesSetACL()
 		Local $o_Pid = Run(@ComSpec & " /c " & $icacls & " " & $ACLFile & $grant & $ACSID & $perms, @SystemDir, @SW_HIDE, $STDOUT_CHILD)
 		;_ExtMsgBox (0 & ";" & @ScriptDir & "\SetAppContainerACL.exe", 0, "Set AppContainer ACL", $icacls & " " & $ACLFile & $grant & $ACSID & $perms)
 
-		ProcessWaitClose($o_Pid)
+		ProcessWaitCloseEx($o_Pid)
 		$out = StdoutRead($o_Pid)
 		$icaclsmsg = StringStripWS($out, $STR_STRIPLEADING + $STR_STRIPTRAILING)
 		;_ExtMsgBox (0 & ";" & @ScriptDir & "\SetAppContainerACL.exe", 0, "Set AppContainer ACL", $out)
@@ -985,7 +985,7 @@ Func RegistrySetACL()
 
 	Local $o_Pid1 = Run(@ComSpec & " /c " & @ScriptDir & "\bin\AppContainerSid.exe" & " " & $Moniker, @ScriptDir, @SW_HIDE, $STDOUT_CHILD)
 
-	ProcessWaitClose($o_Pid1)
+	ProcessWaitCloseEx($o_Pid1)
 	$out2 = StdoutRead($o_Pid1)
 
 	$ACSID = StringStripWS($out2, $STR_STRIPSPACES + $STR_STRIPLEADING + $STR_STRIPTRAILING)
@@ -1001,7 +1001,7 @@ Func RegistrySetACL()
 
 ;_ExtMsgBox (0 & ";" & @ScriptDir & "\SetAppContainerACL.exe", 0, "Set AppContainer ACL", $cmd1 & @CRLF)
 
-	ProcessWaitClose($o_Pid2)
+	ProcessWaitCloseEx($o_Pid2)
 	$out2 = StdoutRead($o_Pid2)
 	$setaclmsg = StringStripWS($out2, $STR_STRIPLEADING + $STR_STRIPTRAILING)
 	;_ExtMsgBox (0 & ";" & @ScriptDir & "\SetAppContainerACL.exe", 0, "Set AppContainer ACL", $out)
@@ -1044,7 +1044,7 @@ Func VolumeRootSetACL()
 
 	Local $o_Pid1 = Run(@ComSpec & " /c " & @ScriptDir & "\bin\AppContainerSid.exe" & " " & $Moniker, @ScriptDir, @SW_HIDE, $STDOUT_CHILD)
 
-	ProcessWaitClose($o_Pid1)
+	ProcessWaitCloseEx($o_Pid1)
 	$out2 = StdoutRead($o_Pid1)
 
 	$ACSID = StringStripWS($out2, $STR_STRIPSPACES + $STR_STRIPLEADING + $STR_STRIPTRAILING)
@@ -1085,7 +1085,7 @@ Func VolumeRootSetACL()
 	Local $o_Pid3 = Run($cmd_all, @ScriptDir, @SW_HIDE, $STDOUT_CHILD)
 	;Local $o_Pid3 = Run(@ComSpec & " /c " & @ScriptDir & "\bin\sysrun.exe" & " " & $cmd1 & $cmd2 & $cmd3 & $cmd4 & $cmd5, @ScriptDir, @SW_HIDE, $STDOUT_CHILD)
 
-	ProcessWaitClose($o_Pid3)
+	ProcessWaitCloseEx($o_Pid3)
 	$out3 = StdoutRead($o_Pid3)
 
 	$VolumeRootOutput = StringStripWS($out3, $STR_STRIPLEADING + $STR_STRIPTRAILING)
@@ -1093,6 +1093,11 @@ Func VolumeRootSetACL()
 
 EndFunc
 
+
+Func ProcessWaitCloseEx($iPID)
+	While ProcessExists($iPID) And Sleep(10)
+	WEnd
+EndFunc
 
 
 While 1

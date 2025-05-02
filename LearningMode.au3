@@ -1,14 +1,25 @@
+; *** Start added Standard Include files by AutoIt3Wrapper ***
+#include <GDIPlus.au3>
+#include <GuiStatusBar.au3>
+#include <WinAPIGdi.au3>
+#include <WinAPIGdiDC.au3>
+#include <WinAPIInternals.au3>
+#include <WinAPIRes.au3>
+#include <WinAPIGdiInternals.au3>
+#include <APIResConstants.au3>
+#include <StatusBarConstants.au3>
+; *** End added Standard Include files by AutoIt3Wrapper ***
 #RequireAdmin
 #NoTrayIcon
 
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_Icon=app.ico
 #AutoIt3Wrapper_UseX64=y
-#AutoIt3Wrapper_Res_Description=AppContainer Learning Mode
+#AutoIt3Wrapper_Res_Description=Permissive Learning Mode
 #AutoIt3Wrapper_res_requestedExecutionLevel=requireAdministrator
-#AutoIt3Wrapper_Res_Fileversion=1.0.2
-#AutoIt3Wrapper_Res_ProductVersion=1.0.2
-#AutoIt3Wrapper_Res_ProductName=AppContainerLearningMode
+#AutoIt3Wrapper_Res_Fileversion=1.1.0
+#AutoIt3Wrapper_Res_ProductVersion=1.1.0
+#AutoIt3Wrapper_Res_ProductName=PermissiveLearningMode
 #AutoIt3Wrapper_Outfile_x64=LearningMode.exe
 #AutoIt3Wrapper_Res_LegalCopyright=@ 2025 WildByDesign
 #AutoIt3Wrapper_Res_Language=1033
@@ -44,6 +55,9 @@
 #include "includes\GUIDarkMode_v0.02mod.au3"
 #include "includes\GUIListViewEx.au3"
 
+#include "includes\ModernMenuRaw.au3"
+#include "includes\_GUICtrlListView_SaveCSV.au3"
+
 
 If @Compiled = 0 Then
 	; System aware DPI awareness
@@ -60,6 +74,8 @@ Global $aArray1, $aTemp, $aRetArray, $PermissiveCount, $aUniques
 Global $cListView, $hListView, $aContent
 Global $oComError = ObjEvent('AutoIt.Error', ErrorHandler)
 
+Global Const $SBS_SIZEBOX = 0x08, $SBS_SIZEGRIP = 0x10
+
 
 If _Singleton("LearningMode", 1) = 0 Then
         $sMsg = " An instance of AppContainer Learning Mode is already running. " & @CRLF
@@ -68,106 +84,22 @@ If _Singleton("LearningMode", 1) = 0 Then
 EndIf
 
 
-$GetDPI = _GetDPI()
-
-; 96 DPI = 100% scaling
-; 120 DPI = 125% scaling
-; 144 DPI = 150% scaling
-; 192 DPI = 200% scaling
-
-If $GetDPI = 96 Then
-	$DPIScale = 100
-	$ListViewWidth = 1000
-	$ListViewHeight = 340
-	$hGUIWidth = 1020
-	$hGUIHeight = 580
-	$HorizontalSpace = 25
-	$HorizontalSpaceSml = 15
-	$VerticalSpaceSml = 8
-	$VerticalSpace = 48
-	$ClientAreaTitlebar = 24
-ElseIf $GetDPI = 120 Then
-	$DPIScale = 125
-	$ListViewWidth = 1200
-	$ListViewHeight = 340
-	$hGUIWidth = 1220
-	$hGUIHeight = 634
-	$HorizontalSpace = 34
-	$HorizontalSpaceSml = 10
-	$VerticalSpaceSml = 14
-	$VerticalSpace = 48
-	$ClientAreaTitlebar = 30
-ElseIf $GetDPI = 144 Then
-	$DPIScale = 150
-	$ListViewWidth = 1400
-	$ListViewHeight = 380
-	$hGUIWidth = 1420
-	$hGUIHeight = 750
-	$HorizontalSpace = 25
-	$HorizontalSpaceSml = 20
-	$VerticalSpaceSml = 14
-	$VerticalSpace = 68
-	$ClientAreaTitlebar = 34
-ElseIf $GetDPI = 168 Then
-	$DPIScale = 175
-	$ListViewWidth = 1520
-	$ListViewHeight = 380
-	$hGUIWidth = 1540
-	$hGUIHeight = 770
-	$HorizontalSpace = 25
-	$HorizontalSpaceSml = 20
-	$VerticalSpaceSml = 14
-	$VerticalSpace = 68
-	$ClientAreaTitlebar = 40
-ElseIf $GetDPI = 192 Then
-	$DPIScale = 200
-	$ListViewWidth = 1640
-	$ListViewHeight = 380
-	$hGUIWidth = 1660
-	$hGUIHeight = 800
-	$HorizontalSpace = 25
-	$HorizontalSpaceSml = 20
-	$VerticalSpaceSml = 14
-	$VerticalSpace = 68
-	$ClientAreaTitlebar = 48
-Else
-	$ListViewWidth = 1200
-	$ListViewHeight = 340
-	$hGUIWidth = 1220
-	$hGUIHeight = 634
-	$HorizontalSpace = 25
-	$HorizontalSpaceSml = 15
-	$VerticalSpaceSml = 8
-	$VerticalSpace = 48
-	$ClientAreaTitlebar = 48
-EndIf
-
-Func _GetDPI()
-    Local $iDPI, $iDPIRat, $Logpixelsy = 90, $hWnd = 0
-    Local $hDC = DllCall("user32.dll", "long", "GetDC", "long", $hWnd)
-    Local $aRet = DllCall("gdi32.dll", "long", "GetDeviceCaps", "long", $hDC[0], "long", $Logpixelsy)
-    DllCall("user32.dll", "long", "ReleaseDC", "long", $hWnd, "long", $hDC)
-    $iDPI = $aRet[0]
-    ;; Set a ratio for the GUI dimensions based upon the current DPI value.
-    If $iDPI < 145 And $iDPI > 121 Then
-        $iDPIRat = $iDPI / 95
-    ElseIf $iDPI < 121 And $iDPI > 84 Then
-        $iDPIRat = $iDPI / 96
-    ElseIf $iDPI < 84 And $iDPI > 0 Then
-        $iDPIRat = $iDPI / 105
-    ElseIf $iDPI = 0 Then
-        $iDPI = 96
-        $iDPIRat = 94
-    Else
-        $iDPIRat = $iDPI / 94
-    EndIf
-    Return SetError(0, $iDPIRat, $iDPI)
-EndFunc
+$idLightBk = _WinAPI_SwitchColor(_WinAPI_GetSysColor($COLOR_BTNFACE))
 
 isDarkMode()
 Func isDarkMode()
 Global $isDarkMode = _WinAPI_ShouldAppsUseDarkMode()
 Endfunc
+
+
+If $isDarkMode = True Then
+	Global $g_iBkColor = 0x2c2c2c, $g_iTextColor = 0xffffff
+Else
+	Global $g_iBkColor = $idLightBk, $g_iTextColor = 0x000000
+EndIf
+
+Global $g_hSizebox, $g_hOldProc, $g_hStatus, $g_iHeight, $g_aText, $g_aRatioW, $g_hDots
+
 
 If $isDarkMode = True Then
 	_ExtMsgBoxSet(Default)
@@ -201,101 +133,116 @@ Next
 EndIf
 
 
-$hGUI = GUICreate("AppContainer Learning Mode", @DesktopWidth - 200, $hGUIHeight, -1, -1, $WS_SIZEBOX + $WS_SYSMENU + $WS_MINIMIZEBOX + $WS_MAXIMIZEBOX)
+_GDIPlus_Startup()
+
+Global $iW = @DesktopWidth - 400, $iH = @DesktopHeight / 2
+$hGUI = GUICreate("Permissive Learning Mode", $iW, $iH, -1, -1, $WS_SIZEBOX + $WS_SYSMENU + $WS_MINIMIZEBOX + $WS_MAXIMIZEBOX)
 
 GUISetIcon(@ScriptFullPath, 201)
+
+$aWinSize = WinGetClientSize($hGUI)
+
+;-----------------
+; Create a sizebox window (Scrollbar class) BEFORE creating the StatusBar control
+$g_hSizebox = _WinAPI_CreateWindowEx(0, "Scrollbar", "", $WS_CHILD + $WS_VISIBLE + $SBS_SIZEBOX, _
+0, 0, 0, 0, $hGUI) ; $SBS_SIZEBOX or $SBS_SIZEGRIP
+
+; Subclass the sizebox (by changing the window procedure associated with the Scrollbar class)
+Local $hProc = DllCallbackRegister('ScrollbarProc', 'lresult', 'hwnd;uint;wparam;lparam')
+$g_hOldProc = _WinAPI_SetWindowLong($g_hSizebox, $GWL_WNDPROC, DllCallbackGetPtr($hProc))
+
+Local $hCursor = _WinAPI_LoadCursor(0, $OCR_SIZENWSE)
+_WinAPI_SetClassLongEx($g_hSizebox, -12, $hCursor) ; $GCL_HCURSOR = -12
+
+;$g_hBrush = _WinAPI_CreateSolidBrush($g_iBkColor)
+
+;-----------------
+$g_hStatus = _GUICtrlStatusBar_Create($hGUI, -1, "", $WS_CLIPSIBLINGS) ; ClipSiblings style +++
+Local $aParts[1] = [-1]
+If $aParts[Ubound($aParts) - 1] = -1 Then $aParts[Ubound($aParts) - 1] = $iW ; client width size
+_MyGUICtrlStatusBar_SetParts($g_hStatus, $aParts)
+
+Dim $g_aText[Ubound($aParts)] = ["   Go to Trace Actions to start a Permissive Learning Mode trace."]
+Dim $g_aRatioW[Ubound($aParts)]
+For $i = 0 To UBound($g_aText) - 1
+_GUICtrlStatusBar_SetText($g_hStatus, "", $i, $SBT_OWNERDRAW + $SBT_NOBORDERS)
+; _GUICtrlStatusBar_SetText($g_hStatus, "", $i, $SBT_OWNERDRAW + $SBT_NOBORDERS) ; interesting ?
+$g_aRatioW[$i] = $aParts[$i] / $iW
+Next
+
+
+; get status bar height for GUI and listview height
+$StatusBarCtrlID = _WinAPI_GetDlgCtrlID($g_hStatus)
+$aPos = ControlGetPos($hGUI, "", $StatusBarCtrlID)
+$StatusBarCtrlIDV = $aPos[1]
+$StatusBarCtrlIDHeight = $aPos[3]
+
+
+$aGUI_Pos = WinGetPos($hGUI)
+$aGUI_ClientSize = WinGetClientSize($hGUI)
+$iCaptionHeight = $aGUI_Pos[3] - $aGUI_ClientSize[1]
+
+
+If $isDarkMode = True Then
+	_SetMenuBkColor(0x2c2c2c)
+	_SetMenuTextColor(0xffffff)
+	_SetMenuSelectTextColor(0xffffff)
+	_SetMenuSelectBkColor(0x404040)
+	_SetMenuSelectRectColor(0x404040)
+	_SetMenuIconBkColor(0x2c2c2c)
+	_SetMenuIconBkGrdColor(0x2c2c2c)
+Else
+	_SetMenuBkColor($idLightBk)
+	_SetMenuTextColor(0x000000)
+	_SetMenuSelectTextColor(0x000000)
+	_SetMenuSelectBkColor(0xf5cba7)
+	_SetMenuSelectRectColor(0xf5cba7)
+	_SetMenuIconBkColor($idLightBk)
+	_SetMenuIconBkGrdColor($idLightBk)
+EndIf
+
+
+Local $iFileMenu5 = _GUICtrlCreateODTopMenu( "&File", $hGUI )
+Local $iFileMenu4 = _GUICtrlCreateODTopMenu( "&Trace Actions", $hGUI )
+
+
+If $isDarkMode = True Then
+	$menuStartTrace = GUICtrlCreateMenuItem( "Start Trace", $iFileMenu4)
+	$menuStopTrace = GUICtrlCreateMenuItem( "Stop Trace", $iFileMenu4)
+
+	$menuExportCSV = GUICtrlCreateMenuItem( "Export as CSV", $iFileMenu5)
+	$menuFileExit = GUICtrlCreateMenuItem( "Exit", $iFileMenu5)
+Else
+	$menuStartTrace = _GUICtrlCreateODMenuItem( "Start Trace", $iFileMenu4)
+	$menuStopTrace = _GUICtrlCreateODMenuItem( "Stop Trace", $iFileMenu4)
+
+	$menuExportCSV = _GUICtrlCreateODMenuItem( "Export as CSV", $iFileMenu5)
+	$menuFileExit = _GUICtrlCreateODMenuItem( "Exit", $iFileMenu5)
+EndIf
+
 
 Local Const $sCascadiaPath = @WindowsDir & "\fonts\CascadiaCode.ttf"
 Local $iCascadiaExists = FileExists($sCascadiaPath)
 
 If $iCascadiaExists Then
-	GUISetFont(10, $FW_THIN, -1, "Cascadia Code")
+	GUISetFont(10, $FW_THIN, -1, "Cascadia Mono")
 Else
 	GUISetFont(10, $FW_NORMAL, -1, "Consolas")
 EndIf
 
 
-Local $hToolTip2 = _GUIToolTip_Create(0)
-;_GUIToolTip_SetMaxTipWidth($hToolTip2, 400)
-
-If $isDarkMode = True Then
-	_WinAPI_SetWindowTheme($hToolTip2, "", "")
-	_GUIToolTip_SetTipBkColor($hToolTip2, 0x202020)
-	_GUIToolTip_SetTipTextColor($hToolTip2, 0xe0e0e0)
-Else
-	_WinAPI_SetWindowTheme($hToolTip2, "", "")
-	_GUIToolTip_SetTipBkColor($hToolTip2, 0xffffff)
-	_GUIToolTip_SetTipTextColor($hToolTip2, 0x000000)
-EndIf
-
-_GUIToolTip_SetMaxTipWidth($hToolTip2, 260)
-
-GUISetFont(10, $FW_NORMAL, -1, "Segoe UI")
-
-
-$StartTrace = GUICtrlCreateButton(" Start Learning ", $HorizontalSpace, $VerticalSpaceSml, -1, -1)
-GUICtrlSetResizing(-1, $GUI_DOCKALL)
-$hStartTrace = GUICtrlGetHandle($StartTrace)
-$aPos = ControlGetPos($hGUI, "", $StartTrace)
-;MsgBox($MB_SYSTEMMODAL, "", "Position: " & $aPos[0] & ", " & $aPos[1] & @CRLF & "Size: " & $aPos[2] & ", " & $aPos[3])
-
-$StartTracePosV = $aPos[1] + 34
-$StartTracePosH = $aPos[0] + $aPos[2]
-
-
-$StopTrace = GUICtrlCreateButton(" Stop Learning ", $StartTracePosH + $HorizontalSpace, $VerticalSpaceSml, -1, -1)
-GUICtrlSetResizing(-1, $GUI_DOCKALL)
-$hStopTrace = GUICtrlGetHandle($StopTrace)
-GUICtrlSetState($StopTrace, $GUI_DISABLE)
-
-$aPos = ControlGetPos($hGUI, "", $StopTrace)
-
-$StopTracePosV = $aPos[1]
-$StopTracePosH = $aPos[0] + $aPos[2]
-$StopTraceHeight = $aPos[3]
-
-
-$SaveParsedData = GUICtrlCreateButton(" Save to CSV ", $StopTracePosH + $HorizontalSpace, $VerticalSpaceSml, -1, -1)
-GUICtrlSetResizing(-1, $GUI_DOCKALL)
-$hSaveParsedData = GUICtrlGetHandle($SaveParsedData)
-GUICtrlSetState($SaveParsedData, $GUI_DISABLE)
-
-$aPos = ControlGetPos($hGUI, "", $SaveParsedData)
-
-$SaveParsedDataPosV = $aPos[1]
-$SaveParsedDataPosH = $aPos[0] + $aPos[2]
-$SaveParsedDataHeight = $aPos[3]
-$SaveParsedDataHeight2 = $aPos[1] / 2
-
-GUISetFont(9, $FW_THIN, -1, "Cascadia Code")
-
-;$InfoBox = GUICtrlCreateLabel(" AppContainer Learning Mode has started. Data will appear after clicking Stop Learning. ", $StopTracePosH + $HorizontalSpace, $VerticalSpaceSml, -1, -1, $WS_BORDER + $SS_LEFTNOWORDWRAP)
-$InfoBox = GUICtrlCreateLabel("                                                                                        ", $SaveParsedDataPosH + $HorizontalSpace, $SaveParsedDataHeight2 + $VerticalSpaceSml, -1, -1, $SS_LEFTNOWORDWRAP)
-$hInfoBox = GUICtrlGetHandle($InfoBox)
-
-$aPos = ControlGetPos($hGUI, "", $InfoBox)
-
-$InfoBoxPosV = $aPos[1]
-$InfoBoxPosH = $aPos[0] + $aPos[2]
-$InfoBoxHeight = $aPos[3]
-
-
-If $iCascadiaExists Then
-	GUISetFont(9, $FW_THIN, -1, "Cascadia Code")
-Else
-	GUISetFont(10, $FW_NORMAL, -1, "Consolas")
-EndIf
+$aGUI_ClientSizeLV = WinGetClientSize($hGUI)
 
 
 Local $exStyles = BitOR($LVS_EX_FULLROWSELECT, $LVS_EX_DOUBLEBUFFER), $cListView
-$cListView = GUICtrlCreateListView("Time Created|Process|Type|Object|Requested Access", 15, $StopTracePosV + $StopTraceHeight + $VerticalSpaceSml, @DesktopWidth - 220, $hGUIHeight - $StopTraceHeight - $VerticalSpaceSml - $VerticalSpaceSml - $VerticalSpaceSml)
-GUICtrlSetResizing(-1, $GUI_DOCKALL)
+$cListView = GUICtrlCreateListView("Time Created|Process|Type|Object|Requested Access", 0, 0, $aWinSize[0], $aGUI_ClientSizeLV[1] - $StatusBarCtrlIDHeight)
+GUICtrlSetResizing(-1, $GUI_DOCKBORDERS)
 $hListView = GUICtrlGetHandle($cListView)
 
 $aPos = ControlGetPos($hGUI, "", $cListView)
 ;MsgBox($MB_SYSTEMMODAL, "", "Position: " & $aPos[0] & ", " & $aPos[1] & @CRLF & "Size: " & $aPos[2] & ", " & $aPos[3])
 $cListViewPosV = $aPos[1]
-$cListViewPosH = $aPos[0] + $aPos[2] + $HorizontalSpace
+$cListViewPosH = $aPos[0] + $aPos[2]
 $cListViewLength = $aPos[2]
 $cListViewHeight = $aPos[3]
 
@@ -341,29 +288,26 @@ EndIf
 Endfunc
 
 
+; to allow the setting of StatusBar BkColor at least under Windows 10
+_WinAPI_SetWindowTheme($g_hStatus, "", "")
 
-$ClientAreaWidth = 15 + $cListViewLength + 15
-$ClientAreaHeight = $VerticalSpaceSml + $StopTraceHeight + $VerticalSpaceSml + $cListViewHeight + 20
+; Set status bar background color
+_GUICtrlStatusBar_SetBkColor($g_hStatus, $g_iBkColor)
+
+;$g_iHeight = _GUICtrlStatusBar_GetHeight($g_hStatus) + 3 ; change the constant (+3) if necessary
+$g_iHeight = $StatusBarCtrlIDHeight
+$g_hDots = CreateDots($g_iHeight, $g_iHeight, 0xFF000000 + $g_iBkColor, 0xFF000000 + $g_iTextColor)
+
+GUIRegisterMsg($WM_SIZE, "WM_SIZE")
+GUIRegisterMsg($WM_MOVE, "WM_MOVE")
+GUIRegisterMsg($WM_DRAWITEM, "WM_DRAWITEM")
 
 
+GUICtrlSetState($menuStopTrace, $GUI_DISABLE)
+GUICtrlSetState($menuExportCSV, $GUI_DISABLE)
 
-WinMove($hGUI,'',(@Desktopwidth - WinGetPos($hGUI)[2]) / 2,(@Desktopheight - WinGetPos($hGUI)[3]) / 2, $ClientAreaWidth + 6, $ClientAreaHeight + $ClientAreaTitlebar)
-;WinMove($hGUI,'',(@Desktopwidth - WinGetPos($hGUI)[2]) / 2,(@Desktopheight - WinGetPos($hGUI)[3]) / 2, 804, 802)
 
-;Sleep(500)
-
-;GUISetState()
-
-GUISetStyle($GUI_SS_DEFAULT_GUI, -1)
-
-WinMove($hGUI,'', (@Desktopwidth - WinGetPos($hGUI)[2]) / 2,(@Desktopheight - WinGetPos($hGUI)[3]) / 2)
-
-GUISetState(@SW_SHOWMINIMIZED)
-GUISetState(@SW_RESTORE)
-
-WinSetOnTop($hGUI, "", $WINDOWS_ONTOP)
-WinSetOnTop($hGUI, "", $WINDOWS_NOONTOP)
-
+GUISetState()
 
 
 Func _LVWndProc($hWnd, $iMsg, $wParam, $lParam)
@@ -706,10 +650,11 @@ EndFunc
 
 
 ; Remove duplicates
-;Global $aUniques = _ArrayUnique2D_Ex($aArray1, "1,2,3,4", True)
-;_ArrayDisplay($aUniques, "Output array")
-
-
+; Global $aUniques = _ArrayUnique2D_Ex($aArray1, "1,2,3,4", True)
+; _ArrayDisplay($aUniques, "Output array")
+;
+; CREDIT: Gianni
+; LINK: https://www.autoitscript.com/forum/topic/169361-_arrayunique-on-multiple-columns/#findComment-1237749
 Func _ArrayUnique2D_Ex(ByRef $aSource, $sColumns = "*", $iReturnAllCols = True)
     ; check wanted columns
     If $sColumns = "*" Then
@@ -798,10 +743,10 @@ Func _DosPathNameToPathName($sPath)
 EndFunc
 
 
-Func SaveParsedData()
+Func ExportToCSV()
     Local Const $sMessage = "Choose a filename."
-
     Local $sFileSaveDialog = FileSaveDialog($sMessage, @DesktopDir, "Comma-separated values (*.csv)", $FD_PATHMUSTEXIST + $FD_PROMPTOVERWRITE, "AppContainerLearning")
+
 	If @error Then
 		;MsgBox($MB_SYSTEMMODAL, "", "No file was saved.")
 	Else
@@ -815,34 +760,167 @@ Func SaveParsedData()
 			$sFileSaveDialog &= ".csv"
 		EndIf
 
-		_FileWriteFromArray($sFileSaveDialog, $aContent, 0, Default, ",")
-		;MsgBox($MB_SYSTEMMODAL, "", "You saved the following file:" & @CRLF & $sFileSaveDialog)
+		_GUICtrlListView_SaveCSV($cListView, $sFileSaveDialog)
 	EndIf
 EndFunc
+
+
+;==============================================
+Func ScrollbarProc($hWnd, $iMsg, $wParam, $lParam) ; Andreik
+
+    If $hWnd = $g_hSizebox And $iMsg = $WM_PAINT Then
+        Local $tPAINTSTRUCT
+        Local $hDC = _WinAPI_BeginPaint($hWnd, $tPAINTSTRUCT)
+        Local $iWidth = DllStructGetData($tPAINTSTRUCT, 'rPaint', 3) - DllStructGetData($tPAINTSTRUCT, 'rPaint', 1)
+        Local $iHeight = DllStructGetData($tPAINTSTRUCT, 'rPaint', 4) - DllStructGetData($tPAINTSTRUCT, 'rPaint', 2)
+        Local $hGraphics = _GDIPlus_GraphicsCreateFromHDC($hDC)
+        _GDIPlus_GraphicsDrawImageRect($hGraphics, $g_hDots, 0, 0, $iWidth, $iHeight)
+        _GDIPlus_GraphicsDispose($hGraphics)
+        _WinAPI_EndPaint($hWnd, $tPAINTSTRUCT)
+        Return 0
+    EndIf
+    Return _WinAPI_CallWindowProc($g_hOldProc, $hWnd, $iMsg, $wParam, $lParam)
+EndFunc   ;==>ScrollbarProc
+
+;==============================================
+Func CreateDots($iWidth, $iHeight, $iBackgroundColor, $iDotsColor) ; Andreik
+
+    Local $iDotSize = Int($iHeight / 10)
+    Local $hBitmap = _GDIPlus_BitmapCreateFromScan0($iWidth, $iHeight)
+    Local $hGraphics = _GDIPlus_ImageGetGraphicsContext($hBitmap)
+    Local $hBrush = _GDIPlus_BrushCreateSolid($iDotsColor)
+    _GDIPlus_GraphicsClear($hGraphics, $iBackgroundColor)
+    Local $a[6][2] = [[2,6], [2,4], [2,2], [4,4], [4,2], [6,2]]
+    For $i = 0 To UBound($a) - 1
+        _GDIPlus_GraphicsFillRect($hGraphics, $iWidth - $iDotSize * $a[$i][0], $iHeight - $iDotSize * $a[$i][1], $iDotSize, $iDotSize, $hBrush)
+    Next
+    _GDIPlus_BrushDispose($hBrush)
+    _GDIPlus_GraphicsDispose($hGraphics)
+    Return $hBitmap
+EndFunc   ;==>CreateDots
+
+;==============================================
+Func _MyGUICtrlStatusBar_SetParts($hWnd, $aPartEdge) ; Pixelsearch
+
+    If Not IsArray($aPartEdge) Then Return False
+    Local $iParts = UBound($aPartEdge)
+    Local $tParts = DllStructCreate("int[" & $iParts & "]")
+    For $i = 0 To $iParts - 1
+        DllStructSetData($tParts, 1, $aPartEdge[$i], $i + 1)
+    Next
+    DllCall("user32.dll", "lresult", "SendMessageW", "hwnd", $hWnd, "uint", $SB_SETPARTS, "wparam", $iParts, "struct*", $tParts)
+    _GUICtrlStatusBar_Resize($hWnd)
+    Return True
+EndFunc   ;==>_MyGUICtrlStatusBar_SetParts
+
+;==============================================
+Func WM_SIZE($hWnd, $iMsg, $wParam, $lParam) ; Pixelsearch
+    #forceref $iMsg, $wParam, $lParam
+
+    If $hWnd = $hGUI Then
+        Local Static $bIsSizeBoxShown = True
+        Local $aSize = WinGetClientSize($hGUI)
+        Local $aGetParts = _GUICtrlStatusBar_GetParts($g_hStatus)
+        Local $aParts[$aGetParts[0]]
+        For $i = 0 To $aGetParts[0] - 1
+            $aParts[$i] = Int($aSize[0] * $g_aRatioW[$i])
+        Next
+        If BitAND(WinGetState($hGUI), $WIN_STATE_MAXIMIZED) Then
+            _GUICtrlStatusBar_SetParts($g_hStatus, $aParts) ; set parts until GUI right border
+            _WinAPI_ShowWindow($g_hSizebox, @SW_HIDE)
+            $bIsSizeBoxShown = False
+        Else
+            _MyGUICtrlStatusBar_SetParts($g_hStatus, $aParts) ; set parts as user scripted them
+            WinMove($g_hSizebox, "", $aSize[0] - $g_iHeight, $aSize[1] - $g_iHeight, $g_iHeight, $g_iHeight)
+            If Not $bIsSizeBoxShown Then
+                _WinAPI_ShowWindow($g_hSizebox, @SW_SHOW)
+                $bIsSizeBoxShown = True
+            EndIf
+        EndIf
+    EndIf
+    Return $GUI_RUNDEFMSG
+EndFunc   ;==>WM_SIZE
+
+;==============================================
+Func WM_MOVE($hWnd, $iMsg, $wParam, $lParam)
+    #forceref $iMsg, $wParam, $lParam
+
+    If $hWnd = $hGUI Then
+        _WinAPI_RedrawWindow($g_hSizebox)
+    EndIf
+    Return $GUI_RUNDEFMSG
+EndFunc   ;==>WM_MOVE
+
+;==============================================
+Func WM_DRAWITEM($hWnd, $iMsg, $wParam, $lParam) ; Kafu
+    #forceref $hWnd, $iMsg, $wParam
+
+    Local Static $tagDRAWITEM = "uint CtlType;uint CtlID;uint itemID;uint itemAction;uint itemState;hwnd hwndItem;handle hDC;long rcItem[4];ulong_ptr itemData"
+    Local $tDRAWITEM = DllStructCreate($tagDRAWITEM, $lParam)
+    If $tDRAWITEM.hwndItem = $g_hStatus Then
+
+		Local $itemID = $tDRAWITEM.itemID ; status bar part number (0, 1, ...)
+		Local $hDC = $tDRAWITEM.hDC
+		Local $tRect = DllStructCreate("long left;long top;long right;long bottom", DllStructGetPtr($tDRAWITEM, "rcItem"))
+		;_WinAPI_FillRect($hDC, DllStructGetPtr($tRect), $g_hBrush) ; backgound color
+		_WinAPI_SetTextColor($hDC, $g_iTextColor) ; text color
+		_WinAPI_SetBkMode($hDC, $TRANSPARENT)
+		DllStructSetData($tRect, "top", $tRect.top + 1)
+		DllStructSetData($tRect, "left", $tRect.left + 1)
+		_WinAPI_DrawText($hDC, $g_aText[$itemID], $tRect, $DT_LEFT)
+
+		Return $GUI_RUNDEFMSG
+	Else
+		_WM_DRAWITEM($hWnd, $iMsg, $wParam, $lParam)
+	EndIf
+EndFunc   ;==>WM_DRAWITEM
 
 
 While 1
     $MSG = GUIGetMsg()
     Select
         Case $MSG = $GUI_EVENT_CLOSE
+			_GDIPlus_BitmapDispose($g_hDots)
+			_GUICtrlStatusBar_Destroy($g_hStatus)
+			_WinAPI_DestroyCursor($hCursor)
+			;_WinAPI_DeleteObject($g_hBrush)
+			_WinAPI_SetWindowLong($g_hSizebox, $GWL_WNDPROC, $g_hOldProc)
+			DllCallbackFree($hProc)
+			_GDIPlus_Shutdown()
+			GUIDelete($hGUI)
             Exit
-		Case $MSG = $SaveParsedData
-			SaveParsedData()
-		Case $MSG = $StartTrace
+		Case $MSG = $menuFileExit
+			_GDIPlus_BitmapDispose($g_hDots)
+			_GUICtrlStatusBar_Destroy($g_hStatus)
+			_WinAPI_DestroyCursor($hCursor)
+			;_WinAPI_DeleteObject($g_hBrush)
+			_WinAPI_SetWindowLong($g_hSizebox, $GWL_WNDPROC, $g_hOldProc)
+			DllCallbackFree($hProc)
+			_GDIPlus_Shutdown()
+			GUIDelete($hGUI)
+			Exit
+		Case $MSG = $menuExportCSV
+			ExportToCSV()
+		Case $MSG = $menuStartTrace
 			_GUICtrlListView_DeleteAllItems($cListView)
-			GUICtrlSetState($StopTrace, $GUI_ENABLE)
-			GUICtrlSetState($StartTrace, $GUI_DISABLE)
-			GUICtrlSetState($SaveParsedData, $GUI_DISABLE)
-			GUICtrlSetData($InfoBox, " AppContainer Learning Mode has started. Data will appear after clicking Stop Learning. ")
+			GUICtrlSetState($menuStopTrace, $GUI_ENABLE)
+			GUICtrlSetState($menuStartTrace, $GUI_DISABLE)
+			GUICtrlSetState($menuExportCSV, $GUI_DISABLE)
+			$g_aText[0] = "   AppContainer Learning Mode has started. Data will appear after clicking Stop Learning."
+			; redraw status bar to update values
+			_WinAPI_RedrawWindow($g_hStatus)
 			StartTrace()
-		Case $MSG = $StopTrace
-			GUICtrlSetState($StartTrace, $GUI_ENABLE)
-			GUICtrlSetState($StopTrace, $GUI_DISABLE)
-			;GUICtrlSetData($InfoBox, "                                                                                        ")
-			GUICtrlSetData($InfoBox, " Parsing Learning Data... (time to parse depends on size of dataset)                    ")
+		Case $MSG = $menuStopTrace
+			GUICtrlSetState($menuStartTrace, $GUI_ENABLE)
+			GUICtrlSetState($menuStopTrace, $GUI_DISABLE)
+			$g_aText[0] = "   Parsing Learning Data... (time to parse depends on size of dataset)"
+			; redraw status bar to update values
+			_WinAPI_RedrawWindow($g_hStatus)
 			StopTrace()
-			GUICtrlSetData($InfoBox, "                                                                                        ")
-			GUICtrlSetState($SaveParsedData, $GUI_ENABLE)
+			$g_aText[0] = " "
+			; redraw status bar to update values
+			_WinAPI_RedrawWindow($g_hStatus)
+			GUICtrlSetState($menuExportCSV, $GUI_ENABLE)
 	EndSelect
 
 WEnd
