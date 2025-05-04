@@ -4,8 +4,8 @@
 #AutoIt3Wrapper_Icon=app.ico
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=Set AppContainer ACL
-#AutoIt3Wrapper_Res_Fileversion=1.1.0
-#AutoIt3Wrapper_Res_ProductVersion=1.1.0
+#AutoIt3Wrapper_Res_Fileversion=1.1.1
+#AutoIt3Wrapper_Res_ProductVersion=1.1.1
 #AutoIt3Wrapper_Res_ProductName=SetAppContainerACL
 #AutoIt3Wrapper_Outfile_x64=SetAppContainerACL.exe
 #AutoIt3Wrapper_Res_LegalCopyright=@ 2025 WildByDesign

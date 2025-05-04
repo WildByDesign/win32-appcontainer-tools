@@ -4,14 +4,16 @@
 #AutoIt3Wrapper_Icon=app.ico
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=Launch AppContainer
-#AutoIt3Wrapper_Res_Fileversion=1.1.0
-#AutoIt3Wrapper_Res_ProductVersion=1.1.0
+#AutoIt3Wrapper_Res_Fileversion=1.1.1
+#AutoIt3Wrapper_Res_ProductVersion=1.1.1
 #AutoIt3Wrapper_Res_ProductName=LaunchAppContainer
 #AutoIt3Wrapper_Outfile_x64=LaunchAppContainer.exe
 #AutoIt3Wrapper_Res_LegalCopyright=@ 2025 WildByDesign
 #AutoIt3Wrapper_Res_Language=1033
 #AutoIt3Wrapper_Res_HiDpi=P
 #AutoIt3Wrapper_Res_Icon_Add=app.ico
+#AutoIt3Wrapper_Res_Icon_Add=unchecked.ico
+#AutoIt3Wrapper_Res_Icon_Add=checked.ico
 ;#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
 #Region ; *** Dynamically added Include files ***
@@ -822,6 +824,10 @@ EndIf
 ;$RUN_1 = GUICtrlCreateButton("  Launch AppContainer  ", 700, 474, -1, 40)
 ;GUICtrlSetFont($RUN_1, 9, -1, -1, "Segoe UI")
 
+If $isDarkMode = True Then
+	;$hImageList = _GUICtrlListView_GetImageList($hCapabilitiesList, 2)
+EndIf
+
 ApplyThemeColor()
 Func ApplyThemeColor()
 
@@ -839,6 +845,19 @@ EndIf
 
 Endfunc
 
+
+If $isDarkMode = True Then
+	$hImageList = _GUICtrlListView_GetImageList($hCapabilitiesList, 2)
+	_GUIImageList_Remove($hImageList)
+
+	If @Compiled = 0 Then
+		_GUIImageList_AddIcon($hImageList, "unchecked.ico")
+		_GUIImageList_AddIcon($hImageList, "checked.ico")
+	Else
+		_GUIImageList_AddIcon($hImageList, @ScriptFullPath, 3)
+		_GUIImageList_AddIcon($hImageList, @ScriptFullPath, 4)
+	EndIf
+EndIf
 
 ;ApplyThemeColortest()
 Func ApplyThemeColortest()

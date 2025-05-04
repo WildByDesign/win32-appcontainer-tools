@@ -17,8 +17,8 @@
 #AutoIt3Wrapper_UseX64=y
 #AutoIt3Wrapper_Res_Description=Permissive Learning Mode
 #AutoIt3Wrapper_res_requestedExecutionLevel=requireAdministrator
-#AutoIt3Wrapper_Res_Fileversion=1.1.0
-#AutoIt3Wrapper_Res_ProductVersion=1.1.0
+#AutoIt3Wrapper_Res_Fileversion=1.1.1
+#AutoIt3Wrapper_Res_ProductVersion=1.1.1
 #AutoIt3Wrapper_Res_ProductName=PermissiveLearningMode
 #AutoIt3Wrapper_Outfile_x64=LearningMode.exe
 #AutoIt3Wrapper_Res_LegalCopyright=@ 2025 WildByDesign
