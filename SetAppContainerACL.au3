@@ -649,7 +649,7 @@ Local $sFileSystem = DriveGetFileSystem($aDrives[0] & "\") ; Find the file syste
 For $i = UBound($aDrives) - 1 To 0 Step -1
 	Local $sFileSystem = DriveGetFileSystem($aDrives[$i] & "\")
 	;If $sFileSystem <> 'NTFS' Or 'ReFS' Then
-	If $sFileSystem = 'NTFS' Or 'ReFS' Then
+	If $sFileSystem = 'NTFS' Or $sFileSystem = 'ReFS' Then
 		;_ArrayDelete($aDrives, $i)
 		;MsgBox($MB_SYSTEMMODAL, "", "File System Type: " & $sFileSystem)
 	Else
